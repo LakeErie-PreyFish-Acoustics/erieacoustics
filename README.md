@@ -6,11 +6,11 @@
 
 <!-- badges: end -->
 
-The goal of erieacoustics is to provide a common set of functions for analysis of acoustic survey data in Lake Erie/
+The goal of erieacoustics is to provide a common set of functions for analysis of acoustic survey data in Lake Erie.
 
 ## Installation
 
-You can install the released version of erieacoustics from github.
+You can install the development version of erieacoustics from github.
 
 ``` r
 devtools::install_github("https://github.com/HoldenJe/erieacoustics") 
