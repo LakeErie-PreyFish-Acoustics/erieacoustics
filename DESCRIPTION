@@ -1,0 +1,14 @@
+Package: erieacoustics
+Type: Package
+Title: Analysis Tools For Erie Acoustic Surveys
+Version: 0.1.0
+Author: J. Holden
+Maintainer: J. Holden <jeremy.holden@ontario.ca>
+Description: A suite of tools used to standardize acoustic data processing
+  and analysis across the multiple Lake Erie acoustic surveys. Tools are designed to work with
+  a common file structure in place and interact with a licensed copy of Echoview. Analysis
+  scripts are designed to work with common Echoview exports.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
