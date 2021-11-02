@@ -28,5 +28,16 @@ This function is primarily a wrapper for functions found in EchoviewR
 in an expected file path.
 }
 \examples{
+\dontrun{
+library(erieacoustics)
+evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplate.EV')
+dir.exists("Pings")
+file.exists(evtemplate)
+
+set_up_transect(evtemplate, projecthome = getwd(),
+               sonartype = "SIMRAD", tranname = "ERIE")
+set_up_transect(evtemplate, projecthome = getwd(),
+             sonartype = "BIOSONIC", tranname = "COB")
+}
 
 }
