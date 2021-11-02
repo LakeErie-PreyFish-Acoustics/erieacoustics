@@ -1,0 +1,30 @@
+Binding: proj_setup
+Title: New Erie Acoustic Project
+OpenFiles: Instructions.md
+
+Parameter: PI
+Widget: TextInput
+Label: Principal Investigator
+Default: M. Dufour
+Position: Right
+
+Parameter: analyst
+Widget: TextInput
+Label: Analyst
+Default: J. Holden
+Position: Right
+
+Parameter: agency
+Widget: SelectInput
+Label: Agency
+Fields: USGS, ODNR, NDMNRF
+
+Parameter: basin
+Widget: SelectInput
+Label: Basin
+Fields: EB, CB, WB
+
+Parameter: sonar_type
+Widget: SelectInput
+Label: Sonar
+Fields: Simrad, Biosonics
