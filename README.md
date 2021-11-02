@@ -6,7 +6,24 @@
 
 <!-- badges: end -->
 
-The goal of erieacoustics is to provide a common set of functions for analysis of acoustic survey data in Lake Erie.
+The goal of `erieacoustics` is to provide a common set of functions for analysis of acoustic survey data in Lake Erie.
+
+## Required Packages
+#### RDCOMClient
+
+`RDCOMClient` is the package that allows R to control [Echoview](https://echoview.com/). For R versions >= 4.1 you will be required to install a forked version of the package:
+
+``` r
+devtools::install_github("dkyleward/RDCOMClient")
+```
+
+#### EchoviewR
+`EchoviewR` provides many useful functions to simplify many of the common tasks using COM to interact with Echoview. Documentation can be found at: [EchoviewR](https://github.com/AustralianAntarcticDivision/EchoviewR)
+
+``` r
+devtools::install_github('AustralianAntarcticDivision/EchoviewR')
+```
+
 
 ## Installation
 
@@ -17,6 +34,7 @@ devtools::install_github("https://github.com/HoldenJe/erieacoustics")
 ```
 
 ## Example
+
 ``` r
 library(erieacoustics)
 evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplateFile.EV')
