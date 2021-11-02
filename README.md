@@ -6,7 +6,7 @@
 
 <!-- badges: end -->
 
-The goal of `erieacoustics` is to provide a common set of functions for analysis of acoustic survey data in Lake Erie.
+The goal of `erieacoustics` is to provide a common set of functions for analysis of acoustic survey data in Lake Erie. The project also provides an RStudio project template to create the necessary directory structure for a Lake Erie acoustic survey to work with the package functions. The template can be accessed from RStudio by: File > New Project > New Directory and then by filling in the required meta data at project set up.
 
 ## Required Packages
 #### RDCOMClient
