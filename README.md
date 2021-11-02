@@ -19,6 +19,16 @@ devtools::install_github("https://github.com/HoldenJe/erieacoustics")
 ## Example
 ``` r
 library(erieacoustics)
+evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplateFile.EV')
+dir.exists("Pings")
+file.exists(evtemplate)
+
+set_up_transect(evtemplate, projecthome = getwd(), 
+                sonartype = "SIMRAD", tranname = "ERIE")
+
+
+set_up_transect(evtemplate, projecthome = getwd(), 
+                sonartype = "BIOSONIC", tranname = "COB")
 
 ```
 
