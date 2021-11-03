@@ -59,6 +59,28 @@ export_transect <- function(prjdir, transectname, horizbin) {
   EVExport[['EmptyCells']]<-TRUE
   EVExport[['EmptySingleTargetPings']]<-TRUE
 
+  # Check for analysis regions
+  region_count <- EVFile[["Regions"]]$Count()
+  if(region_count == 0) {
+    EVAppObj$Quit()
+    usethis::ui_oops("Are you sure you are ready to export this transect?")
+    usethis::ui_stop("There are no regions defined")
+  }
+
+  region_index <- c(0:(region_count-1))
+
+  check_region_type <- function(index_value) {
+    region <- EVFile[["Regions"]]$Item(index_value)
+    region$RegionType() == 1 # 1 is EV's enum value for Analysis Regions
+  }
+
+  has_analysis_region <- any(sapply(region_index, check_region_type))
+  if(!(has_analysis_region)) {
+    EVAppObj$Quit()
+    usethis::ui_oops("Are you sure you are ready to export this transect?")
+    usethis::ui_stop("No analysis regions found")
+  }
+
   # Set Sv grid based on horizbin input
   FinalSv<-EVFile[["Variables"]]$FindByName("ExportSv")
   FinalSv_propGrid<-FinalSv[['Properties']][['Grid']]
@@ -92,9 +114,14 @@ export_transect <- function(prjdir, transectname, horizbin) {
   } else {ui_oops("Something went wrong, histo not exported.")}
 
   # Save and Close
+  done_message1 <- paste0("Export script for ", transectname, " has completed.")
+  done_message2 <- paste0("Files are saved in ", transect_dir)
   EVFile$Save()
   EVFile$Close()
-  on.exit(EVAppObj$Quit())
+  if(EVAppObj$Quit()){
+    usethis::ui_done(done_message1)
+    usethis::ui_done(done_message2)
+  }
 }
 
 
