@@ -2,9 +2,10 @@
 #'
 #' @description Provides a series of COM commands to set export parameters and then export
 #' the required analysis files.
-#' @param prjdir
-#' @param transectname
-#' @param horizbin
+#' @param prjdir Project directory normally obtained using `getwd()`
+#' @param transectname Transect name to be exported. Function expects the transect
+#' name to correspond with a transect folder located in the *Pings* directory
+#' @param horizbin Size of the horizontal grid (in meters) to be applied for the analysis cells
 #'
 #' @return The function will attempt to return a cruise track (`gps.csv`), a copy of the
 #' edited epi line in the Echoview format (`EpiLayerLine_Edited.evl`) and as a csv
@@ -17,7 +18,7 @@
 #' # export_transect(getwd(), "R21_S22", 800)
 #'}
 
-export_transect <- function(prjdir, transectname, horizbin) {
+export_transect_evdata <- function(prjdir, transectname, horizbin) {
   require(RDCOMClient)
 
   transect_dir<-file.path(prjdir, "Pings", transectname)
@@ -111,7 +112,7 @@ export_transect <- function(prjdir, transectname, horizbin) {
   if(FinalTS$ExportFrequencyDistributionByRegionsByCellsAll(file.path(
     transect_dir, 'histo.csv'))) {
     usethis::ui_done("TS distribution by Regions by Cell Exported as histo.csv")
-  } else {ui_oops("Something went wrong, histo not exported.")}
+  } else {usethis::ui_oops("Something went wrong, histo not exported.")}
 
   # Save and Close
   done_message1 <- paste0("Export script for ", transectname, " has completed.")
