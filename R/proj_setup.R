@@ -2,8 +2,13 @@ proj_setup <- function(path, ...) {
 
   # Create directories
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  dir.create(paste0(path, "/Pings"), recursive = TRUE, showWarnings = FALSE)
-  dir.create(paste0(path, "/EVTemplate"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/1_Annual_Protocol"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/2_EVTemplate"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/3_Ping_Data"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/4_Trawl_Data"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/5_Enviro_Data"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/6_Misc"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/7_Annual_summary"), recursive = TRUE, showWarnings = FALSE)
 
   # create some header text
   header <- c(
