@@ -21,9 +21,14 @@ proj_setup <- function(path, ...) {
     "## Folder Description and Contents",
     "File | Description",
     "---------- | --------------------------------------------------",
-    "Pings | contains the acoustic data for each transect",
-    "Pings/TransectName | each transect should be uniquely named and all data stored within a single directory",
-    "EVTemplate | Echoview processing templates should be stored here to be available to `set_up_transect`",
+    "1_Annual_Protocol | contains Rmarkdown scripts and products for annual survey protocol",
+    "2_EVTemplate | Echoview processing template should be stored here to be available to `set_up_transect`",
+    "3_Ping_Data | contains the acoustic data for each transect",
+    "3_Ping_Data/TransectName | each transect should be uniquely named and all data stored within a single directory",
+    "4_Trawl_Data | contains the paired trawl data",
+    "5_Enviro_Data | contains environmental measurements",
+    "6_Misc | contains miscellaneous files associated with survey",
+    "7_Annual_Summary | contains Rmarkdown scripts and prodcuts for annual summary",
     "### *This file can be deleted following project set up.*"
   )
 
