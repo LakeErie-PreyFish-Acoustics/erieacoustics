@@ -28,7 +28,7 @@ proj_setup <- function(path, ...) {
     "4_Trawl_Data | contains the paired trawl data",
     "5_Enviro_Data | contains environmental measurements",
     "6_Misc | contains miscellaneous files associated with survey",
-    "7_Annual_Summary | contains Rmarkdown scripts and prodcuts for annual summary",
+    "7_Annual_Summary | contains Rmarkdown scripts and products for annual summary",
     "### *This file can be deleted following project set up.*"
   )
 
