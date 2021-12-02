@@ -8,7 +8,7 @@
 #' @param sonartype The function uses a text pattern matching to find acoustic data files.
 #' Function expects an input of *BIOSONIC* or *SIMRAD* to detect \*.dt4 or \*.raw
 #' file types.
-#' @param tranname Transect name that matches a valid directory in *PINGS/* directory
+#' @param tranname Transect name that matches a valid directory in *3_Ping_Data/* directory
 #'
 #' @description This function calls RDCOMClient to establish a COM application for Echoview.
 #' This function is primarily a wrapper for functions found in EchoviewR
@@ -24,7 +24,7 @@
 #' @examples
 #' \dontrun{
 #'library(erieacoustics)
-#'evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplate.EV')
+#'evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
 #'dir.exists("Pings")
 #'file.exists(evtemplate)
 #'
@@ -61,7 +61,7 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
   EvFile <- EvApp$NewFile(template)
 
   # get then load dt4 files
-  dt4_dir<-file.path(projecthome, "Pings", tranname)
+  dt4_dir<-file.path(projecthome, "3_Ping_Data", tranname)
   files_all<-dir(dt4_dir, full.names = T)
   dt4<-grep(files_all, pattern = sonarfilepattern, value = T)
 
