@@ -25,7 +25,7 @@
 #' \dontrun{
 #'library(erieacoustics)
 #'evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
-#'dir.exists("Pings")
+#'dir.exists("3_Ping_Data")
 #'file.exists(evtemplate)
 #'
 #'set_up_transect(evtemplate, projecthome = getwd(),
