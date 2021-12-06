@@ -21,7 +21,7 @@
 export_transect_evdata <- function(prjdir, transectname, horizbin) {
   require(RDCOMClient)
 
-  transect_dir<-file.path(prjdir, "Pings", transectname)
+  transect_dir<-file.path(prjdir, "3_Ping_data", transectname)
   EVFile2Open<-file.path(transect_dir, paste(transectname, ".EV", sep=""))
   if(!file.exists(EVFile2Open)) {
     usethis::ui_oops(paste(EVFile2Open, " does not exist",sep=""))
