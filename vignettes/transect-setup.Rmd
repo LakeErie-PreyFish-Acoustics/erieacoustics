@@ -1,0 +1,69 @@
+---
+title: "Lake Erie Transect Set Up"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lake Erie Transect Set Up}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(erieacoustics)
+```
+
+## Introduction
+The package `erieacoustics` provides tools to standardize the analysis of Lake Erie acoustic survey data across the three surveys (WB, CB, EB). Historically the surveys have followed similar analytical approaches as described in the Standard Operating Procedures this effort aims to provide a common suite of R tools to improve standardization as well as provide better documentation of the survey.
+
+
+## Project Set Up
+An RStudio project template has been created establish a common directory structure and necessary `README` files for the surveys. The common project directory structure is an important guiding principle as many of the functions expect data to be stored in a specific directory tree and common naming conventions. 
+
+### Directory Structure
+Folder | Description
+---------- | --------------------------------------------------
+1_Annual_Protocol | contains Rmarkdown scripts and products for annual survey protocol
+2_EVTemplate | Echoview processing template should be stored here to be available to `set_up_transect` 
+3_Ping_Data | contains the acoustic data for each transect
+3_Ping_Data/TransectName | each transect should be uniquely named and all data stored within a single directory
+4_Trawl_Data | contains the paired trawl data
+5_Enviro_Data | contains environmental measurements
+6_Misc | contains miscellaneous files associated with survey
+7_Annual_Summary | contains Rmarkdown scripts and products for annual summary 
+
+## Processing Steps
+
+1. Check that a template exists
+```{r}
+evtemplate <- file.path(getwd(), '2_EVTemplate/ErieHacTemplate_2021.EV')
+dir.exists("3_Ping_Data") 
+file.exists(evtemplate)
+```
+
+2. Use COM scripting to open new file using the template, import all acoustic files (i.e. `*.raw`, `*.dt4`) and perform tasks within the Echoview Template.
+```{r}
+set_up_transect(evtemplate, projecthome = getwd(),
+                sonartype = "BIOSONIC", tranname = "G_315_07062021")
+```
+
+3. View files with in EV and make necessary adjustments
+<!-- insert some EV screen captures here -->
+
+4. Define line relative regions
+Important to follow the established naming convention. Provide a description and example here. Include a screen capture.
+
+5. Export transect data
+```{r}
+export_transect_evdata(getwd(),"G_315_07062021",1000)
+```
+
+6. Run analysis scripts.
+
+

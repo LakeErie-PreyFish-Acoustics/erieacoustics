@@ -1,0 +1,4 @@
+name: SurveyViewer
+description: >
+   Standard template to view all acoustic transects
+create_dir: FALSE
