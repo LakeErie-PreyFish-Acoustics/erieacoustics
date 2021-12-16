@@ -76,6 +76,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
   EVExport[['EmptySingleTargetPings']]<-TRUE
+  #EVExport[["IntegrationResults"]][["ABC"]]<-TRUE
 
   # Check for analysis regions
   region_count <- EVFile[["Regions"]]$Count()
