@@ -54,7 +54,24 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
                                  file.path(transect_dir, 'EpiLayerLine_Final.csv'))
     usethis::ui_done("Epi line exported.")
     }
+  
+  
+  # Export Detected Bottom Line
+  botline<-EVFile[['Lines']]$FindByName('DetectedBottom')
+  
+  ## exit function if epi line can't be found, else, export it.
+  if(is.null(botline)) {
+    EVAppObj$Quit()
+    usethis::ui_stop("Bottom line could not be found. This is probably bad. COM has been terminated.")
+  } else {
+    botline$Export(file.path(transect_dir, 'BottomLine_Detected.evl'))
+    EchoviewR::EVExportLineAsCSV(EVFile, "ExportSv",
+                                 "DetectedBottom",
+                                 file.path(transect_dir, 'BottomLine_Final.csv'))
+    usethis::ui_done("Bottom line exported.")
+  }
 
+  
   # Ensure certain variable are activated
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
