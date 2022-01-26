@@ -133,8 +133,8 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   } else {usethis::ui_oops("Something went wrong, histo not exported.")}
   
   
-  # sigle targets
-  if(FinalTS$ExportSingleTargetsAll(file.path(transect_dir, 'st.csv'))){
+  # single targets
+  if(FinalTS$ExportSingleTargetAll(file.path(transect_dir, 'st.csv'))){
     usethis::ui_done("Sigle Targets Exported as ts.target.csv")
   } else {ui_oops("Something went wrong, TS not exported.")}
   
