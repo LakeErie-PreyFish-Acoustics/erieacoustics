@@ -131,6 +131,15 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
     transect_dir, 'histo.csv'))) {
     usethis::ui_done("TS distribution by Regions by Cell Exported as histo.csv")
   } else {usethis::ui_oops("Something went wrong, histo not exported.")}
+  
+  
+  # sigle targets
+  if(FinalTS$ExportSingleTargetsAll(file.path(transect_dir, 'st.csv'))){
+    usethis::ui_done("Sigle Targets Exported as ts.target.csv")
+  } else {ui_oops("Something went wrong, TS not exported.")}
+  
+  
+  
 
   # Save and Close
   done_message1 <- paste0("Export script for ", transectname, " has completed.")
