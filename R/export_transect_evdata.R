@@ -133,14 +133,6 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   } else {usethis::ui_oops("Something went wrong, histo not exported.")}
   
   
-  # single targets
-  if(FinalTS$ExportSingleTargetAll(file.path(transect_dir, 'st.csv'))){
-    usethis::ui_done("Sigle Targets Exported as ts.target.csv")
-  } else {ui_oops("Something went wrong, TS not exported.")}
-  
-  
-  
-
   # Save and Close
   done_message1 <- paste0("Export script for ", transectname, " has completed.")
   done_message2 <- paste0("Files are saved in ", transect_dir)
