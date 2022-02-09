@@ -14,9 +14,15 @@ LazyData: true
 RoxygenNote: 7.1.2
 Imports: 
     dplyr,
-    EchoviewR,
-    RDCOMClient,
+    EchoviewR (>= 1.1.18),
+    RDCOMClient (>= 0.95.0),
     usethis
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Remotes: 
+    url::https://github.com/dkyleward/RDCOMClient,
+    url::https://github.com/AustralianAntarcticDivision/EchoviewR
+VignetteBuilder: knitr
