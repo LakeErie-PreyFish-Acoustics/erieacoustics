@@ -25,7 +25,7 @@
 #' \dontrun{
 #'library(erieacoustics)
 #'evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplate.EV')
-#'dir.exists("Pings")
+#'dir.exists("3_Ping_Data")
 #'file.exists(evtemplate)
 #'
 #'set_up_transect(evtemplate, projecthome = getwd(),
@@ -61,7 +61,7 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
   EvFile <- EvApp$NewFile(template)
 
   # get then load dt4 files
-  dt4_dir<-file.path(projecthome, "Pings", tranname)
+  dt4_dir<-file.path(projecthome, "3_Ping_Data", tranname)
   files_all<-dir(dt4_dir, full.names = T)
   dt4<-grep(files_all, pattern = sonarfilepattern, value = T)
 

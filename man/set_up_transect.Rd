@@ -31,7 +31,7 @@ in an expected file path.
 \dontrun{
 library(erieacoustics)
 evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplate.EV')
-dir.exists("Pings")
+dir.exists("3_Ping_Data")
 file.exists(evtemplate)
 
 set_up_transect(evtemplate, projecthome = getwd(),
