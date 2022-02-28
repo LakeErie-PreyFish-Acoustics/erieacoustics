@@ -38,7 +38,7 @@ devtools::install_github("https://github.com/HoldenJe/erieacoustics")
 ``` r
 library(erieacoustics)
 evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplateFile.EV')
-dir.exists("Pings")
+dir.exists("3_Ping_Data")
 file.exists(evtemplate)
 
 set_up_transect(evtemplate, projecthome = getwd(), 
