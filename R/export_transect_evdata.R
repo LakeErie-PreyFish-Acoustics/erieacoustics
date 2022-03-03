@@ -59,7 +59,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   # Export Detected Bottom Line
   botline<-EVFile[['Lines']]$FindByName('DetectedBottom')
   
-  ## exit function if epi line can't be found, else, export it.
+  ## exit function if bottom line can't be found, else, export it.
   if(is.null(botline)) {
     EVAppObj$Quit()
     usethis::ui_stop("Bottom line could not be found. This is probably bad. COM has been terminated.")
