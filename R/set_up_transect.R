@@ -21,6 +21,7 @@
 #' @return
 #' @export
 #'
+#'
 #' @examples
 #' \dontrun{
 #'library(erieacoustics)

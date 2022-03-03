@@ -33,6 +33,7 @@ proj_setup <- function(path, ...) {
     "### *This file can be deleted following project set up.*"
   )
 
+  
   writeLines(instructions, con = file.path(path, "Instructions.md"))
 
   # collect inputs and paste together as 'Parameter: Value'
