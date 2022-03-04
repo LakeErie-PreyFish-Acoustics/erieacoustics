@@ -33,7 +33,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   EVFile<-EVAppObj$OpenFile(EVFile2Open)
 
   # Export Cruise Track
-  GPS<-EVFile[["Variables"]]$FindByName("Fileset1: position GPS fixes (1)")
+  GPS<-EVFile[["Variables"]]$FindByName("Fileset1: position GPS fixes")
   if(GPS$ExportData(file.path(transect_dir, 'gps.csv'))) {
     usethis::ui_done("GPS track exported")
   } else {
