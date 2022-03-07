@@ -26,6 +26,6 @@ the required analysis files.
 \examples{
 \dontrun{
 library(erieacoustics)
-# export_transect(getwd(), "R21_S22", 800)
+export_transect_evdata(getwd(), "R21_S22", 800)
 }
 }
