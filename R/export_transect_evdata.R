@@ -15,7 +15,7 @@
 #' @examples
 #' \dontrun{
 #' library(erieacoustics)
-#' # export_transect(getwd(), "R21_S22", 800)
+#' export_transect_evdata(getwd(), "R21_S22", 800)
 #'}
 
 export_transect_evdata <- function(prjdir, transectname, horizbin) {
@@ -85,6 +85,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   }
 
 
+
   # Ensure certain variable are activated
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
@@ -112,6 +113,15 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
     usethis::ui_oops("Are you sure you are ready to export this transect?")
     usethis::ui_stop("No analysis regions found")
   }
+
+  # Export region definitions
+  EVRegions <- EVFile[["Regions"]]
+  region_success <- EVRegions$ExportDefinitionsAll(
+    file.path(transect_dir, 'Region_Definitions.evr')
+    )
+
+  if(region_success) {usethis::ui_done("Region definitions exported.")}
+
 
   # Set Sv grid based on horizbin input
   FinalSv<-EVFile[["Variables"]]$FindByName("ExportSv")
