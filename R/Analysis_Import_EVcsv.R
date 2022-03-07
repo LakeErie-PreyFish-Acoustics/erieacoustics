@@ -41,6 +41,6 @@ Analysis_Import_EVcsv <- function(){
   histo<-dplyr::bind_rows(lapply(histo, readr::read_csv))
 
   # store and return as a list
-  hacdat <- list(intg, ts, histo)
+  hacdat <- list(intg = intg, ts = ts, histo = histo)
   hacdat
 }
