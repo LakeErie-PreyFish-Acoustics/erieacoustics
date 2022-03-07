@@ -16,7 +16,7 @@ RStudio project environment you can populate this field using `getwd()`}
 Function expects an input of *BIOSONIC* or *SIMRAD* to detect \*.dt4 or \*.raw
 file types.}
 
-\item{tranname}{Transect name that matches a valid directory in *PINGS/* directory}
+\item{tranname}{Transect name that matches a valid directory in *3_Ping_Data/* directory}
 }
 \value{
 
@@ -30,7 +30,7 @@ in an expected file path.
 \examples{
 \dontrun{
 library(erieacoustics)
-evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplate.EV')
+evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
 dir.exists("3_Ping_Data")
 file.exists(evtemplate)
 
