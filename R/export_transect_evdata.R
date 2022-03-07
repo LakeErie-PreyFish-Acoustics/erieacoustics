@@ -21,7 +21,7 @@
 export_transect_evdata <- function(prjdir, transectname, horizbin) {
   require(RDCOMClient)
 
-  transect_dir<-file.path(prjdir, "Pings", transectname)
+  transect_dir<-file.path(prjdir, "3_Ping_data", transectname)
   EVFile2Open<-file.path(transect_dir, paste(transectname, ".EV", sep=""))
   if(!file.exists(EVFile2Open)) {
     usethis::ui_oops(paste(EVFile2Open, " does not exist",sep=""))
@@ -33,11 +33,24 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   EVFile<-EVAppObj$OpenFile(EVFile2Open)
 
   # Export Cruise Track
+  gps_success <- FALSE
   GPS<-EVFile[["Variables"]]$FindByName("Fileset1: position GPS fixes")
-  if(GPS$ExportData(file.path(transect_dir, 'gps.csv'))) {
-    usethis::ui_done("GPS track exported")
+  if(!is.null(GPS)) {
+    gps_success <- GPS$ExportData(file.path(transect_dir, 'gps.csv'))
+    }
+
+  if(!gps_success) {
+    GPS<-EVFile[["Variables"]]$FindByName("Fileset1: position GPS fixes (1)")
+    if(!is.null(GPS)) {
+      gps_success <- GPS$ExportData(file.path(transect_dir, 'gps.csv'))
+      }
+    }
+
+  if(is.null(GPS)) {usethis::ui_oops("GPS file could not be found. gps.csv not created.")}
+  if(gps_success){
+    usethis::ui_done("GPS fixes exported as gps.csv")
   } else {
-    usethis::ui_oops("GPS fileset not found. gps.csv not created")
+    usethis::ui_oops("GPS fixes could not be exported.")
   }
 
   # Export Edited Epi Line
@@ -55,10 +68,28 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
     usethis::ui_done("Epi line exported.")
     }
 
+
+  # Export Detected Bottom Line
+  botline<-EVFile[['Lines']]$FindByName('DetectedBottom')
+
+  ## exit function if bottom line can't be found, else, export it.
+  if(is.null(botline)) {
+    EVAppObj$Quit()
+    usethis::ui_stop("Bottom line could not be found. This is probably bad. COM has been terminated.")
+  } else {
+    botline$Export(file.path(transect_dir, 'BottomLine_Detected.evl'))
+    EchoviewR::EVExportLineAsCSV(EVFile, "ExportSv",
+                                 "DetectedBottom",
+                                 file.path(transect_dir, 'BottomLine_Final.csv'))
+    usethis::ui_done("Bottom line exported.")
+  }
+
+
   # Ensure certain variable are activated
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
   EVExport[['EmptySingleTargetPings']]<-TRUE
+  #EVExport[["IntegrationResults"]][["ABC"]]<-TRUE
 
   # Check for analysis regions
   region_count <- EVFile[["Regions"]]$Count()
@@ -104,6 +135,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   SinTar_propGrid$SetTimeDistanceGrid(5, horizbin)
 
 
+
   if(FinalTS$ExportSingleTargetsByRegionsByCellsAll(file.path(transect_dir, 'ts.csv'))){
     usethis::ui_done("TS by Regions by Cell Exported as ts.csv")
   } else {ui_oops("Something went wrong, TS not exported.")}
@@ -113,6 +145,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
     transect_dir, 'histo.csv'))) {
     usethis::ui_done("TS distribution by Regions by Cell Exported as histo.csv")
   } else {usethis::ui_oops("Something went wrong, histo not exported.")}
+
 
   # Save and Close
   done_message1 <- paste0("Export script for ", transectname, " has completed.")
