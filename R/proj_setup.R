@@ -33,15 +33,29 @@ proj_setup <- function(path, ...) {
   instructions <- c(
     "# Erie Acoustic Project Template Intructions  ",
     "This file is best viewed by using the *PREVIEW* feature in RStudio  ",
-    "The package template has prepopulated the directory with the following file structure:  ",
+    "### *This file can be deleted following project set up.*  ",
     " ",
-    "## Additional Instructions  ",
-    "1. Please review and edit the README.md file.  ",
-    "2. Example analysis scripts have been included to assist in utilizing built in functions.  ",
-    "3. Please review the scripts and make necessary edits prior to running the scripts.  ",
-    "4. A gitignore file has been included. If you have git installed you will still need to run `git init` to initialize the repo.  ",
-    " ",
-    "### *This file can be deleted following project set up.*  "
+    "## What's included  ",
+    "1. README.md template  ",
+    "2. Instructions.md  ",
+    "3. A gitignore file has been included. If you have git installed you will still need to run `git init` to initialize the repo.  ",
+    "4. Template folder directory has been created. This directory structure is required for certain funtions to run as intended.  ",
+    "5. Example analysis scripts have been included to assist in utilizing built in functions.  ",
+    "  ",
+    "## Instructions  ",
+    "1. Please review and update the README.md file.  ",
+    "2. In RStudio, running 'Preview' will knit the md file to create an html README file.  ",
+    "3. Each transect's data should be in individual folders within 3_Ping_Data.  ",
+    "4. The analysis template should be copied to 2_EVTemplate  ",
+    "  ",
+    "## Processing Steps  ",
+    "1. Analyze the calibration data first as the *.ecs file is required in the current template.  ",
+    "2. Open the EV template and edit the template to include the new calibration file. Save as a new template in 2_EVTemplate.  ",
+    "3. Open and edit `1_run_setup_template.R`. This script applies the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file.  ",
+    "4. Run `1_run_setup_template.R`. *WARNING*: this process could take a long time!   ",
+    "5. Inspect and edit each transect EV file. See *link to detailed instructions*  ",
+    "6. When data inspection and editing is complete, run `2_Export_EVdata.r` to export each transect. *WARNING*: this could take a long time.  ",
+    "7. Open `3_Biomass_Analysis.r` and edit as required to complete the data analysis.  "
   )
 
 
