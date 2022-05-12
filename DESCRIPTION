@@ -1,7 +1,7 @@
 Package: erieacoustics
 Type: Package
 Title: Analysis Tools For Erie Acoustic Surveys
-Version: 0.2.1
+Version: 0.2.2
 Author: J. Holden
 Maintainer: J. Holden <jeremy.holden@ontario.ca>
 Description: A suite of tools used to standardize acoustic data processing
