@@ -35,6 +35,9 @@ proj_setup <- function(path, ...) {
     "This file is best viewed by using the *PREVIEW* feature in RStudio  ",
     "### *This file can be deleted following project set up.*  ",
     " ",
+    "# IMPORTANT",
+    "Run `erieacoustics::finish_setup()` to complete the project set up. ",
+    "  ",
     "## What's included  ",
     "1. README.md template  ",
     "2. Instructions.md  ",
@@ -43,13 +46,14 @@ proj_setup <- function(path, ...) {
     "5. Example analysis scripts have been included to assist in utilizing built in functions.  ",
     "  ",
     "## Instructions  ",
-    "1. Please review and update the README.md file.  ",
-    "2. In RStudio, running 'Preview' will knit the md file to create an html README file.  ",
-    "3. Each transect's data should be in individual folders within 3_Ping_Data.  ",
-    "4. The analysis template should be copied to 2_EVTemplate  ",
+    "1. Complete the project set up by running `erieacoustics::finish_setup()`  ",
+    "2. Please review and update the README.md file. View: [ReadMe](ReadMe.html).  ",
+    "3. In RStudio, running 'Preview' will knit the md file to create an html README file.  ",
+    "4. Each transect's data should be in individual folders within 3_Ping_Data.  ",
+    "5. The analysis template should be copied to 2_EVTemplate  ",
     "  ",
     "## Processing Steps  ",
-    "1. Analyze the calibration data first as the *.ecs file is required in the current template.  ",
+    "1. Analyze the calibration data ([instructions](6_Misc/Calibration_Instructions_Notes.html)) first as the *.ecs file is required in the current template.  ",
     "2. Open the EV template and edit the template to include the new calibration file. Save as a new template in 2_EVTemplate.  ",
     "3. Open and edit `1_run_setup_template.R`. This script applies the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file.  ",
     "4. Run `1_run_setup_template.R`. *WARNING*: this process could take a long time!   ",
@@ -128,5 +132,6 @@ proj_setup <- function(path, ...) {
     "lapply(transects, run_all)"
   )
 
-  writeLines(transect_setup, con = file.path(path, "7_Annual_Summary/1_run_setup_template.R"))
+  # writeLines(transect_setup, con = file.path(path, "7_Annual_Summary/1_run_setup_template.R"))
+
 }
