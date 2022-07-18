@@ -32,7 +32,11 @@ finish_setup <- function(){
     save_as = "7_Annual_Summary/1_import_data_to_template.R",
     package = "erieacoustics"
   )
-
+    usethis::use_template(
+      template = "export_from_EV.R",
+      save_as = "7_Annual_Summary/2_export_data_from_EV.R",
+      package = "erieacoustics"
+    )
   }
 
   usethis::use_template(
