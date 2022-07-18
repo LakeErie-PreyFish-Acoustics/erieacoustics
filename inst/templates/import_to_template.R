@@ -10,7 +10,7 @@
 # to include the new ecs file
 # 2. ensure that you've edited the TRANSDUCER to match the file types
 # TRANSDUCER is passed to erieacoustics::set_up_transect() so that the function
-# can determine whether
+# can determine whether to import .raw or .dt4 files
 # Note: the following work flow assumes all transects were collected using the same
 # acoustics system. If the survey transects contain a mix of Biosonics and Simrad
 # transducers you will have to split run them in different batches to account
