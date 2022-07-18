@@ -6,7 +6,7 @@
 
 <!-- badges: end -->
 
-The goal of `erieacoustics` is to provide a common set of functions for analysis of acoustic survey data in Lake Erie. The project also provides an RStudio project template to create the necessary directory structure for a Lake Erie acoustic survey to work with the package functions. The template can be accessed from RStudio by: File > New Project > New Directory > New Erie Acoustic Project and then by filling in the required meta data at project set up.
+The goal of `erieacoustics` is to provide a common set of functions for analysis of acoustic survey data in Lake Erie. The project also provides an RStudio project template to create the necessary directory structure for a Lake Erie acoustic survey to work with the package functions. The template can be accessed from RStudio by: File > New Project > New Directory > New Erie Acoustic Project and then by filling in the required meta data at project set up. Additional templates and starter code is also added by running `erieacoustics::finish_setup()`.
 
 ## Required Packages
 #### RDCOMClient
@@ -37,6 +37,7 @@ devtools::install_github("https://github.com/HoldenJe/erieacoustics")
 
 ``` r
 library(erieacoustics)
+finish_setup()
 evtemplate <- file.path(getwd(), 'EVTemplate/EVTemplateFile.EV')
 dir.exists("3_Ping_Data")
 file.exists(evtemplate)
