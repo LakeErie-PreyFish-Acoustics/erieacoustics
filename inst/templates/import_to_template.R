@@ -10,18 +10,18 @@
 # to include the new ecs file
 # 2. ensure that you've edited the TRANSDUCER to match the file types
 # TRANSDUCER is passed to erieacoustics::set_up_transect() so that the function
-# can determine whether
+# can determine whether to import .raw or .dt4 files
 # Note: the following work flow assumes all transects were collected using the same
 # acoustics system. If the survey transects contain a mix of Biosonics and Simrad
 # transducers you will have to split run them in different batches to account
 # for a) they require different EV templates; and
 # b) the file types differ (i.e. set_up_transect expects *.dt4
-# files when TRANSDUCER == BIOSONICS)
+# files when TRANSDUCER == BIOSONIC)
 # 3. Edit templatefile to reflect the template you intend to use
 
 # Edit these variables ----
-TRANSDUCER <- 'SIMRAD' # alternatively, 'BIOSONICS'
-templatefile <- '2_EVTemplate/ErieHacTemplate_2021_v2_simrad.EV'
+sonartype <- 'SIMRAD' # 'SIMRAD' or 'BIOSONIC'
+templatefile <- '2_EVTemplate/ErieHacTemplate_2021_v2_simrad.EV' # path to template
 
 # Start the import process ----
 # the following code assumes you want to run all transects together as a batch
@@ -36,7 +36,7 @@ transects <- dir('3_Ping_Data')
 
 # run all ----
 # WARNING - this could take a while
-run_all <- function(x) {set_up_transect(evtemplate, getwd(), TRANSDUCER, x)}
+run_all <- function(x) {set_up_transect(evtemplate, getwd(), sonartype, x)}
 lapply(transects, run_all)
 
 # end of R process

@@ -51,3 +51,12 @@ set_up_transect(evtemplate, projecthome = getwd(),
 
 ```
 
+## Templates
+Template scripts are created when `erieacoustics::finish_setup()` is ran. Clean templates can be generated using:
+```
+usethis::use_template(
+      template = "export_from_EV.R",
+      save_as = "7_Annual_Summary/2_export_data_from_EV.R",
+      package = "erieacoustics"
+    )
+```

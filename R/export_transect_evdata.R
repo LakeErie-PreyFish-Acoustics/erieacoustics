@@ -148,7 +148,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
 
   if(FinalTS$ExportSingleTargetsByRegionsByCellsAll(file.path(transect_dir, 'ts.csv'))){
     usethis::ui_done("TS by Regions by Cell Exported as ts.csv")
-  } else {ui_oops("Something went wrong, TS not exported.")}
+  } else {usethis::ui_oops("Something went wrong, TS not exported.")}
 
   # And for histo
   if(FinalTS$ExportFrequencyDistributionByRegionsByCellsAll(file.path(
