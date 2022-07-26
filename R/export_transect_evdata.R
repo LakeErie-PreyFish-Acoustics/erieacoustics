@@ -157,6 +157,13 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   } else {usethis::ui_oops("Something went wrong, histo not exported.")}
 
 
+  # Export processed Sv ('ExportSv') as .png image
+  ExportSvVar = EvFile[['Variables']]$FindByName('ExportSv')                                ## find and define variable to be exported
+  image.file.name = paste0(basename(transectname),'.png')                                       ## define image file name
+  ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1) ## export to transect_dir folder
+
+
+
   # Save and Close
   done_message1 <- paste0("Export script for ", transectname, " has completed.")
   done_message2 <- paste0("Files are saved in ", transect_dir)
