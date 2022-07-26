@@ -158,12 +158,15 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
 
 
   # Export processed Sv ('ExportSv') as .png image
-  ExportSvVar <- EvFile[['Variables']]$FindByName('ExportSv')                                         ## find and define variable to be exported
+  ExportSvVar <- EVFile[['Variables']]$FindByName('ExportSv')                                         ## find and define variable to be exported
   ExportSvVar_propGrid<-ExportSvVar[['Properties']][['Grid']]
   ExportSvVar_propGrid$SetDepthRangeGrid(1, 200)
   ExportSvVar_propGrid$SetTimeDistanceGrid(5, horizbin)
-  image.file.name <- paste0(basename(transectname),'.png')                                            ## define image file name
-  ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1) ## export to transect_dir folder
+  image.file.name <- paste0(basename(transectname),'.png') ## define image file name
+
+  if(ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1)) {
+    usethis::ui_done("Transect image as .png")
+  } else {usethis::ui_oops("Something went wrong, image not exported.")} ## export to transect_dir folder
 
 
 
