@@ -84,12 +84,21 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
 
   # Copy virtual lines to editable lines
   EchoviewR::EVCreateEditableLine(EVFile = EvFile,
+                       lineNameToCopy='CombineSurfaceLines',
+                       editableLineName='SurfaceExclusion_Editable')
+
+  EchoviewR::EVCreateEditableLine(EVFile = EvFile,
+                       lineNameToCopy='Bottom_Backstep Smoothed',
+                       editableLineName='BottomExclusion_Editable')
+
+  EchoviewR::EVCreateEditableLine(EVFile = EvFile,
                        lineNameToCopy='Epi Layer',
                        editableLineName='Epi Layer_Editable')
 
   EchoviewR::EVCreateEditableLine(EVFile = EvFile,
                        lineNameToCopy='Epi Layer Max Smoothed MEAN span gaps',
                        editableLineName='Epi Layer Max Smoothed MEAN span gaps_Editable')
+
 
 
   # Export processed Sv ('ExportSv') as .png image
