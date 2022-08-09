@@ -84,13 +84,33 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
     usethis::ui_done("Bottom line exported.")
   }
 
-
-
   # Ensure certain variable are activated
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
   EVExport[['EmptySingleTargetPings']]<-TRUE
   #EVExport[["IntegrationResults"]][["ABC"]]<-TRUE
+
+
+
+  ## Set Var for line relative regions
+  Var = EVFile[['Variables']]$FindByName('ExportSv')
+
+  ## Create line relative region - Epilimnion
+  TopLine = EVFile[['Lines']]$FindByName('SurfaceExclusion') # set top line
+  BottomLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set bottom line
+  NewRegion = Var$CreateLineRelativeRegion(paste0(transectname,'_epi'),TopLine,BottomLine,-1,-1) # create line relative region
+  EpiClassObj = EVFile[['RegionClasses']]$FindByName('Epilimnion') # object for the class you want the region to have
+  NewRegion[['RegionClass']] = EpiClassObj # change the region’s class to the desired one
+  NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
+
+  ## Create line relative region - Hypolimnion
+  TopLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set top line
+  BottomLine = EVFile[['Lines']]$FindByName('EchogramFloor') # set bottom line
+  NewRegion = Var$CreateLineRelativeRegion(paste0(transectname,'_hypo'),TopLine,BottomLine,-1,-1) # create line relative region
+  HypoClassObj = EVFile[['RegionClasses']]$FindByName('Hypolimnion') # object for the class you want the region to have
+  NewRegion[['RegionClass']] = HypoClassObj # change the region’s class to the desired one
+  NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
+
 
   # Check for analysis regions
   region_count <- EVFile[["Regions"]]$Count()
@@ -162,7 +182,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ExportSvVar_propGrid<-ExportSvVar[['Properties']][['Grid']]
   ExportSvVar_propGrid$SetDepthRangeGrid(1, 200)
   ExportSvVar_propGrid$SetTimeDistanceGrid(5, horizbin)
-  image.file.name <- paste0(basename(transectname),'.png') ## define image file name
+  image.file.name <- paste0(basename(transectname),'_final','.png') ## define image file name
 
   if(ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1)) {
     usethis::ui_done("Transect image as .png")
