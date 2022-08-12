@@ -96,11 +96,11 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   Var = EVFile[['Variables']]$FindByName('ExportSv')
 
   ## delete analysis regions rom previous export
-  number.of.regions = EvFile[['Regions']]$Count()
+  number.of.regions = EVFile[['Regions']]$Count()
   for (i in 1:number.of.regions){
-    RegionObject = EvFile[['Regions']]$Item(number.of.regions-i)
+    RegionObject = EVFile[['Regions']]$Item(number.of.regions-i)
     if(RegionObject$RegionType() == 1){ # All region types = -1; bad = 0; analysis = 1; marker = 2; bad data empty water = 4
-      EvFile[['Regions']]$Delete(RegionObject)
+      EVFile[['Regions']]$Delete(RegionObject)
     }
     rm(RegionObject)
   }
