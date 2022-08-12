@@ -95,6 +95,16 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ## Set Var for line relative regions
   Var = EVFile[['Variables']]$FindByName('ExportSv')
 
+  ## delete analysis regions rom previous export
+  number.of.regions = EvFile[['Regions']]$Count()
+  for (i in 1:number.of.regions){
+    RegionObject = EvFile[['Regions']]$Item(number.of.regions-i)
+    if(RegionObject$RegionType() == 1){ # All region types = -1; bad = 0; analysis = 1; marker = 2; bad data empty water = 4
+      EvFile[['Regions']]$Delete(RegionObject)
+    }
+    rm(RegionObject)
+  }
+
   ## Create line relative region - Epilimnion
   TopLine = EVFile[['Lines']]$FindByName('SurfaceExclusion') # set top line
   BottomLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set bottom line
