@@ -98,7 +98,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ## Create line relative region - Epilimnion
   TopLine = EVFile[['Lines']]$FindByName('SurfaceExclusion') # set top line
   BottomLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set bottom line
-  NewRegion = Var$CreateLineRelativeRegion(paste0(transectname,'_epi'),TopLine,BottomLine,-1,-1) # create line relative region
+  NewRegion = Var$CreateLineRelativeRegion(paste0(basename(transectname),'_EPI'),TopLine,BottomLine,-1,-1) # create line relative region
   EpiClassObj = EVFile[['RegionClasses']]$FindByName('Epilimnion') # object for the class you want the region to have
   NewRegion[['RegionClass']] = EpiClassObj # change the region’s class to the desired one
   NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
@@ -106,7 +106,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ## Create line relative region - Hypolimnion
   TopLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set top line
   BottomLine = EVFile[['Lines']]$FindByName('EchogramFloor') # set bottom line
-  NewRegion = Var$CreateLineRelativeRegion(paste0(transectname,'_hypo'),TopLine,BottomLine,-1,-1) # create line relative region
+  NewRegion = Var$CreateLineRelativeRegion(paste0(basename(transectname),'_HYP'),TopLine,BottomLine,-1,-1) # create line relative region
   HypoClassObj = EVFile[['RegionClasses']]$FindByName('Hypolimnion') # object for the class you want the region to have
   NewRegion[['RegionClass']] = HypoClassObj # change the region’s class to the desired one
   NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
