@@ -196,7 +196,7 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ExportSvVar_propGrid$SetTimeDistanceGrid(5, horizbin)
   image.file.name <- paste0(basename(transectname),'_final','.png') ## define image file name
 
-  if(ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1)) {
+  if(ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),2000,-1,-1)) {
     usethis::ui_done("Transect image as .png")
   } else {usethis::ui_oops("Something went wrong, image not exported.")} ## export to transect_dir folder
 
