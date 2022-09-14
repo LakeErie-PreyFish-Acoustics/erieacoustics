@@ -107,6 +107,7 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
   ExportSvVar$ExportEchogramToImage(file.path(dt4_dir,image.file.name,fsep='\\'),2000,-1,-1) ## export to dt4_dir folder
 
 
+
    # save again
   EvFile$Save()
 
