@@ -95,15 +95,20 @@ export_transect_evdata <- function(prjdir, transectname, horizbin) {
   ## Set Var for line relative regions
   Var = EVFile[['Variables']]$FindByName('ExportSv')
 
-  ## delete analysis regions rom previous export
-  number.of.regions = EVFile[['Regions']]$Count()
-  for (i in 1:number.of.regions){
-    RegionObject = EVFile[['Regions']]$Item(number.of.regions-i)
-    if(RegionObject$RegionType() == 1){ # All region types = -1; bad = 0; analysis = 1; marker = 2; bad data empty water = 4
-      EVFile[['Regions']]$Delete(RegionObject)
+  ## delete analysis regions from previous export
+  test.number.of.regions = EVFile[['Regions']]$Count()
+  if(test.number.of.regions == 0) {usethis::ui_stop("There were no previously created analysis regions") } else {
+     number.of.regions = EVFile[['Regions']]$Count()
+    for (i in 1:number.of.regions){
+      RegionObject = EVFile[['Regions']]$Item(number.of.regions-i)
+      if(RegionObject$RegionType() == 1){ # All region types = -1; bad = 0; analysis = 1; marker = 2; bad data empty water = 4
+        EVFile[['Regions']]$Delete(RegionObject)
+      }
+      rm(RegionObject)
     }
-    rm(RegionObject)
+    usethis::ui_stop("Previously created analysis regions have been deleted.")
   }
+
 
   ## Create line relative region - Epilimnion
   TopLine = EVFile[['Lines']]$FindByName('SurfaceExclusion') # set top line
