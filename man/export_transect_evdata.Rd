@@ -7,10 +7,9 @@
 export_transect_evdata(prjdir, transectname, horizbin)
 }
 \arguments{
-\item{prjdir}{Project directory normally obtained using `getwd()`}
+\item{projecthome}{Project directory normally obtained using `getwd()`}
 
-\item{transectname}{Transect name to be exported. Function expects the transect
-name to correspond with a transect folder located in the *Pings* directory}
+\item{transectname}{TTransect name that matches a valid directory in *3_Ping_Data/* directory}
 
 \item{horizbin}{Size of the horizontal grid (in meters) to be applied for the analysis cells}
 }
