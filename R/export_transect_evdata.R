@@ -85,13 +85,50 @@ export_transect_evdata <- function(projecthome, transectname, horizbin) {
     usethis::ui_done("Bottom line exported.")
   }
 
-
-
   # Ensure certain variable are activated
   EVExport<-EVFile[["Properties"]][['Export']]
   EVExport[['EmptyCells']]<-TRUE
   EVExport[['EmptySingleTargetPings']]<-TRUE
   #EVExport[["IntegrationResults"]][["ABC"]]<-TRUE
+
+
+
+  ## Set Var for line relative regions
+  Var = EVFile[['Variables']]$FindByName('ExportSv')
+
+  ## delete analysis regions from previous export
+  test.number.of.regions = EVFile[['Regions']]$Count()
+  if(test.number.of.regions == 0) {usethis::ui_stop("There were no previously created analysis regions") } else {
+     number.of.regions = EVFile[['Regions']]$Count()
+    for (i in 1:number.of.regions){
+      RegionObject = EVFile[['Regions']]$Item(number.of.regions-i)
+      if(RegionObject$RegionType() == 1){ # All region types = -1; bad = 0; analysis = 1; marker = 2; bad data empty water = 4
+        EVFile[['Regions']]$Delete(RegionObject)
+      }
+      rm(RegionObject)
+    }
+    usethis::ui_stop("Previously created analysis regions have been deleted.")
+  }
+
+
+  ## Create line relative region - Epilimnion
+  TopLine = EVFile[['Lines']]$FindByName('SurfaceExclusion') # set top line
+  BottomLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set bottom line
+  NewRegion = Var$CreateLineRelativeRegion(paste0(basename(transectname),'_EPI'),TopLine,BottomLine,-1,-1) # create line relative region
+  EpiClassObj = EVFile[['RegionClasses']]$FindByName('Epilimnion') # object for the class you want the region to have
+  NewRegion[['RegionClass']] = EpiClassObj # change the region’s class to the desired one
+  NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
+  NewRegion[['RegionType']] = 1 # assign region type = 'Analysis' (1)
+
+  ## Create line relative region - Hypolimnion
+  TopLine = EVFile[['Lines']]$FindByName('Epi Layer Max Smoothed MEAN span gaps_Editable') # set top line
+  BottomLine = EVFile[['Lines']]$FindByName('EchogramFloor') # set bottom line
+  NewRegion = Var$CreateLineRelativeRegion(paste0(basename(transectname),'_HYP'),TopLine,BottomLine,-1,-1) # create line relative region
+  HypoClassObj = EVFile[['RegionClasses']]$FindByName('Hypolimnion') # object for the class you want the region to have
+  NewRegion[['RegionClass']] = HypoClassObj # change the region’s class to the desired one
+  NewRegion[['RegionClass']]$Name() # check what class is now assigned to the region
+  NewRegion[['RegionType']] = 1 # assign region type = 'Analysis' (1)
+
 
   # Check for analysis regions
   region_count <- EVFile[["Regions"]]$Count()
@@ -159,9 +196,17 @@ export_transect_evdata <- function(projecthome, transectname, horizbin) {
 
 
   # Export processed Sv ('ExportSv') as .png image
-  ExportSvVar = EvFile[['Variables']]$FindByName('ExportSv')                                ## find and define variable to be exported
-  image.file.name = paste0(basename(transectname),'.png')                                       ## define image file name
-  ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),horizbin,-1,-1) ## export to transect_dir folder
+  ExportSvVar <- EVFile[['Variables']]$FindByName('ExportSv')                                         ## find and define variable to be exported
+  ExportSvVar_propGrid<-ExportSvVar[['Properties']][['Grid']]
+  ExportSvVar_propGrid$SetDepthRangeGrid(1, 200)
+  ExportSvVar_propGrid$SetTimeDistanceGrid(5, horizbin)
+  image.file.name <- paste0(basename(transectname),'_final','.png') ## define image file name
+
+  if(ExportSvVar$ExportEchogramToImage(file.path(transect_dir,image.file.name,fsep='\\'),2000,-1,-1)) {
+    usethis::ui_done("Transect image as .png")
+  } else {usethis::ui_oops("Something went wrong, image not exported.")} ## export to transect_dir folder
+
+
 
 
 
