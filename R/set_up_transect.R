@@ -84,6 +84,14 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
 
   # Copy virtual lines to editable lines
   EchoviewR::EVCreateEditableLine(EVFile = EvFile,
+                       lineNameToCopy='CombineSurfaceLines',
+                       editableLineName='SurfaceExclusion_Editable')
+
+  EchoviewR::EVCreateEditableLine(EVFile = EvFile,
+                       lineNameToCopy='Bottom_Backstep Smoothed',
+                       editableLineName='BottomExclusion_Editable')
+
+  EchoviewR::EVCreateEditableLine(EVFile = EvFile,
                        lineNameToCopy='Epi Layer',
                        editableLineName='Epi Layer_Editable')
 
@@ -92,10 +100,12 @@ set_up_transect<-function (template, projecthome, sonartype, tranname) {
                        editableLineName='Epi Layer Max Smoothed MEAN span gaps_Editable')
 
 
+
   # Export processed Sv ('ExportSv') as .png image
   ExportSvVar = EvFile[['Variables']]$FindByName('ExportSv')                                ## find and define variable to be exported
-  image.file.name = paste0(basename(tranname),'.png')                                       ## define image file name
-  ExportSvVar$ExportEchogramToImage(file.path(dt4_dir,image.file.name,fsep='\\'),10000,-1,-1) ## export to dt4_dir folder
+  image.file.name = paste0(basename(tranname),'_initial','.png')                                       ## define image file name
+  ExportSvVar$ExportEchogramToImage(file.path(dt4_dir,image.file.name,fsep='\\'),2000,-1,-1) ## export to dt4_dir folder
+
 
 
    # save again
