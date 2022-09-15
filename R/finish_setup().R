@@ -45,6 +45,12 @@ finish_setup <- function(){
     package = "erieacoustics"
   )
 
+  usethis::use_template(
+    template = "annual_survey_template.Rmd",
+    save_as = "1_Annual_Protocol/1_Project_Proposal_Summary.Rmd",
+    package = "erieacoustics"
+  )
+
   rmarkdown::render("6_Misc/Calibration_Instructions_Notes.Rmd")
   rmarkdown::render("ReadMe.md")
 

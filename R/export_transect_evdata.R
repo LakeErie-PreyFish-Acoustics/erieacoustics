@@ -2,7 +2,8 @@
 #'
 #' @description Provides a series of COM commands to set export parameters and then export
 #' the required analysis files.
-#' @param prjdir Project directory normally obtained using `getwd()`
+#' @param projecthome A file path to the project directory. Generally, when working in an
+#' RStudio project environment you can populate this field using `getwd()`
 #' @param transectname Transect name to be exported. Function expects the transect
 #' name to correspond with a transect folder located in the *Pings* directory
 #' @param horizbin Size of the horizontal grid (in meters) to be applied for the analysis cells
@@ -18,10 +19,10 @@
 #' export_transect_evdata(getwd(), "R21_S22", 800)
 #'}
 
-export_transect_evdata <- function(prjdir, transectname, horizbin) {
+export_transect_evdata <- function(projecthome, transectname, horizbin) {
   require(RDCOMClient)
 
-  transect_dir<-file.path(prjdir, "3_Ping_data", transectname)
+  transect_dir<-file.path(projecthome, "3_Ping_data", transectname)
   EVFile2Open<-file.path(transect_dir, paste(transectname, ".EV", sep=""))
   if(!file.exists(EVFile2Open)) {
     usethis::ui_oops(paste(EVFile2Open, " does not exist",sep=""))
