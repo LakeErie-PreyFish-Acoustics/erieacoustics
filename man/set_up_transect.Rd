@@ -9,14 +9,13 @@ set_up_transect(template, projecthome, sonartype, tranname)
 \arguments{
 \item{template}{A file path to an Echoview template}
 
-\item{projecthome}{A file path to the project directory. Generally, when working in an
-RStudio project environment you can populate this field using `getwd()`}
+\item{projecthome}{Project directory normally obtained using `getwd()`}
 
 \item{sonartype}{The function uses a text pattern matching to find acoustic data files.
 Function expects an input of *BIOSONIC* or *SIMRAD* to detect \*.dt4 or \*.raw
 file types.}
 
-\item{tranname}{Transect name that matches a valid directory in *3_Ping_Data/* directory}
+\item{transectname}{Transect name that matches a valid directory in *3_Ping_Data/* directory}
 }
 \value{
 

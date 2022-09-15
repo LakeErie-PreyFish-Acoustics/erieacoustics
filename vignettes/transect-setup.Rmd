@@ -50,7 +50,7 @@ file.exists(evtemplate)
 2. Use COM scripting to open new file using the template, import all acoustic files (i.e. `*.raw`, `*.dt4`) and perform tasks within the Echoview Template.
 ```{r}
 set_up_transect(evtemplate, projecthome = getwd(),
-                sonartype = "BIOSONIC", tranname = "G_315_07062021")
+                sonartype = "BIOSONICS", tranname = "G_315_07062021")
 ```
 
 3. View files with in EV and make necessary adjustments
