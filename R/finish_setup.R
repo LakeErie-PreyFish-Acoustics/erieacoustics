@@ -54,7 +54,7 @@ finish_setup <- function(){
 
   usethis::use_template(
     template = "aggregate_format_data.R",
-    save_as = "7_Annual_Summary/2_aggregate_format_data.R",
+    save_as = "7_Annual_Summary/3_aggregate_format_data.R",
     package = "erieacoustics"
   )
 }
