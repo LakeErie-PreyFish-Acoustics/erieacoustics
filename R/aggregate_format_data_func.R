@@ -105,4 +105,3 @@ require(tidyr)
 }
 
 
-devtools::document()
