@@ -52,3 +52,10 @@ finish_setup <- function(){
   usethis::ui_done("`1_import_data_to_template.R` file created in `7_Annual_Summary`")
   usethis::ui_done("Calibration help file created.")
 }
+
+
+usethis::use_template(
+  template = "aggregate_format_data.R",
+  save_as = "7_Annual_Summary/2_aggregate_format_data.R",
+  package = "erieacoustics"
+)
