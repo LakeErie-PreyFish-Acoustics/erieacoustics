@@ -9,6 +9,3 @@
 #' head(Effort_Allocation)
 
 data("Effort_Allocation")
-
-
-devtools::document()
