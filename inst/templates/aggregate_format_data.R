@@ -5,13 +5,22 @@
 # M. DuFour
 
 # What it does ----
-# This script runs the aggregate_format_data() function
+# This script will import, combine, and format summarized integration and target strength
+# data from hydroacoustic survey transects. Three .csv files with data associated by
+# BASIN, STRATUM, GRID, LAYER (epilimnion vs. hypolimnion region), and interval are exported.
+#
+# 'hacdat.csv' includes  integration, mean target strength, and fish density estimates.
+#
+# 'histo.csv' includes single target counts for 0.5 dB target strength bins ranging
+# from -64.5 to -20.5 dB.
+#
+# histohac.csv' merges 'hacdat' and 'histo' together.
 
 # How to use ----
-# 1. Ensure that data has been processed and scrutinized
-# 2. Ensure that transect level data has been exported using '2_export_data_from_EV'
-# 3. Run script below
-# the `getwd()` call is required as Echoview doesn't recognize relative paths from R
+# 1. Ensure that data has imported to Echoview template using '1_import_data_to_template.R'.
+# 2. Ensure that Echoview files have been processed and scrutinized
+# 3. Ensure that transect level data has been exported using '2_export_data_from_EV'
+# 4. Run script below
 
 # ----
 library(readr)
