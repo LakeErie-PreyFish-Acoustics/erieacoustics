@@ -98,7 +98,7 @@ export_transect_evdata <- function(projecthome, transectname, horizbin) {
 
   ## delete analysis regions from previous export
   test.number.of.regions = EVFile[['Regions']]$Count()
-  if(test.number.of.regions == 0) {usethis::ui_stop("There were no previously created analysis regions") } else {
+  if(test.number.of.regions == 0) {usethis::ui_done("There were no previously created analysis regions") } else {
      number.of.regions = EVFile[['Regions']]$Count()
     for (i in 1:number.of.regions){
       RegionObject = EVFile[['Regions']]$Item(number.of.regions-i)
@@ -107,7 +107,7 @@ export_transect_evdata <- function(projecthome, transectname, horizbin) {
       }
       rm(RegionObject)
     }
-    usethis::ui_stop("Previously created analysis regions have been deleted.")
+    usethis::ui_done("Previously created analysis regions have been deleted.")
   }
 
 
