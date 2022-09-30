@@ -56,8 +56,9 @@ hacdat$LAYER <- sapply(strsplit(hacdat$Region_name, "_"), '[',4)
 hacdat$sigma_bs <- 10^(hacdat$TS_mean/10) # create sigma_bs
 hacdat$sigma_bs <- ifelse(hacdat$TS_mean == 9999, NA,  hacdat$sigma_bs) # assign NAs
 ## impute missing sigma_bs_adj data - replace missing and Nv flagged sigma_bs values with mean of interval
-impute.mean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
-hacdat <- plyr::ddply(hacdat, ~ STRATUM + GRID + LAYER, transform, sigma_bs = impute.mean(sigma_bs))
+hacdat <- hacdat %>%
+  group_by(BASIN, STRATUM, GRID, LAYER) %>%
+  mutate_at(vars(sigma_bs), ~replace_na(., mean(., na.rm = TRUE)))
 hacdat$TS_mean <- 10*log10(hacdat$sigma_bs) # convert sigma_bs back to TS_mean using imputed values
 
 ## Calculate fish density:
@@ -93,9 +94,9 @@ histo$LAYER <- sapply(strsplit(histo$Region_name, "_"), '[',4)
 ## Reduce histo to essential columns and transform to long form
 ## TS columns to rows with replicated data
 histo <- histo %>% select(BASIN, STRATUM, GRID, LAYER, Date_M, Time_M, Lat_M, Lon_M, Interval,
-                          Targets_Binned, `-64.500000`:`-20.500000`) %>%
-  gather(TS, N_Targets, `-64.500000`:`-20.500000`) %>%
-  mutate(TS = as.numeric(TS))
+                          Targets_Binned, Attribute, `-64.500000`:`-20.500000`) %>%
+  pivot_longer(`-64.500000`:`-20.500000`, names_to = "TS_bin") %>%
+  pivot_wider(names_from = "Attribute")
 
 ## write histo data to file
 write.csv(histo, "7_Annual_Summary/histo.csv")
