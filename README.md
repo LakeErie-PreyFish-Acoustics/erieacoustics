@@ -11,10 +11,10 @@ The goal of `erieacoustics` is to provide a common set of functions for analysis
 ## Required Packages
 #### RDCOMClient
 
-`RDCOMClient` is the package that allows R to control [Echoview](https://echoview.com/). For R versions >= 4.1 you will be required to install a forked version of the package:
+`RDCOMClient` is the package that allows R to control [Echoview](https://echoview.com/). It can be installed via the github repo:
 
 ``` r
-devtools::install_github("dkyleward/RDCOMClient")
+devtools::install_github("omegahat/RDCOMClient")
 ```
 
 #### EchoviewR
