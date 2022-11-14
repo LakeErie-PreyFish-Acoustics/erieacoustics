@@ -1,7 +1,7 @@
 #' Finalize sample grids
 #'
-#' @param basin
-#' @param year
+#' @param basin specify the basin (ex. EB, CB or WB)
+#' @param year intended survey year
 #'
 #' @description This function creates final survey may pulling
 #' from sample_grids_final.csv.

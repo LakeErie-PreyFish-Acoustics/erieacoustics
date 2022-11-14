@@ -3,7 +3,7 @@
 #' vignette approach, this function copies template analysis scripts that establish a workflow
 #' based on the existing package functions. The template files are "auto-magically" created
 #' following the project naming procedures and directories.
-#' @return
+#' @return NULL
 #' @export
 #'
 #' @examples

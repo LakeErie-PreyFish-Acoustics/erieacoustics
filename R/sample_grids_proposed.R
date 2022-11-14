@@ -1,7 +1,7 @@
 #' Randomly generate proposed sample grids
 #'
-#' @param basin
-#' @param year
+#' @param basin specify the basin (ex. EB, CB or WB)
+#' @param year intended survey year
 #'
 #' @description This function randomly selects sample grids for each strata
 #' based on effort allocation table.
