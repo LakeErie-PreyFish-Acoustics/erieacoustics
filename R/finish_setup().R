@@ -47,8 +47,8 @@ finish_setup <- function(){
   )
 
   usethis::use_template(
-    template = "sample_grids_select.Rmd",
-    save_as = "1_Annual_Protocol/1_Select_Sample_Grids.Rmd",
+    template = "sample_grids_select.R",
+    save_as = "1_Annual_Protocol/1_Select_Sample_Grids.R",
     package = "erieacoustics"
   )
 
