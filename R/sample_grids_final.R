@@ -10,9 +10,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' sample_grid_final_select("WB",2022)
+#' sample_grids_final("WB",2022)
 #'  }
-sample_grid_final_select <- function(basin, year){
+sample_grids_final <- function(basin, year){
 
 ## subset survey grid shape file
 shape_5mingrid_surv_sub <- shape_5mingrid_surv %>% filter(BASIN == basin)

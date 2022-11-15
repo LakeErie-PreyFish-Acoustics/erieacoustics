@@ -22,6 +22,7 @@
 # ----
 library(erieacoustics)
 library(eriespatial)
+library(magrittr)
 ## Set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
 basin <- "WB"
 year <- 2022

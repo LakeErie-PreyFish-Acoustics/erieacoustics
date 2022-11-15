@@ -11,9 +11,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' sample_grid_rand_select("WB",2022)
+#' sample_grids_proposed("WB",2022)
 #'  }
-sample_grid_rand_select <- function(basin,year) {
+sample_grids_proposed <- function(basin,year) {
 
   ## set seed as year
   set.seed(year)
