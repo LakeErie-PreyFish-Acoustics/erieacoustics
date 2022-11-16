@@ -20,9 +20,15 @@
 # the `getwd()` call is required as Echoview doesn't recogize relative paths from R
 
 # ----
+## load packages
 library(erieacoustics)
 library(eriespatial)
 library(magrittr)
+library(dplyr)
+library(sf)
+library(ggplot2)
+library(gridExtra)
+
 ## Set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
 basin <- "WB"
 year <- 2022

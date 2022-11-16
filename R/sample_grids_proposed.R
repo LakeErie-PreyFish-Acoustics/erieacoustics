@@ -23,6 +23,10 @@ sample_grids_proposed <- function(basin,year) {
   shape_5mincent_surv_sub <- shape_5mincent_surv %>% filter(BASIN == basin)
   shape_5mingrid_surv_sub <- shape_5mingrid_surv %>% filter(BASIN == basin)
 
+  ## create X Y coordinate columns from geometry
+  shape_5mincent_surv_sub$X <- st_coordinates(shape_5mincent_surv_sub)[,1]
+  shape_5mincent_surv_sub$Y <- st_coordinates(shape_5mincent_surv_sub)[,2]
+
   ## write all avaialble sampled grids to file as .csv
   write.csv(shape_5mincent_surv_sub, "1_Annual_Protocol/sample_grids_all.csv")
 
@@ -38,6 +42,10 @@ sample_grids_proposed <- function(basin,year) {
 
   ## create 'Priority' field
   surv_cent$Priority <- "'Survey or Extra'"
+
+  ## create X Y coordinate columns from geometry
+  surv_cent$X <- st_coordinates(surv_cent)[,1]
+  surv_cent$Y <- st_coordinates(surv_cent)[,2]
 
 
   ## basin specific shape files and bounding box
