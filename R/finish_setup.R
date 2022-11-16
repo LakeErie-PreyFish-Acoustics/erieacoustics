@@ -3,7 +3,7 @@
 #' vignette approach, this function copies template analysis scripts that establish a workflow
 #' based on the existing package functions. The template files are "auto-magically" created
 #' following the project naming procedures and directories.
-#' @return
+#' @return NULL
 #' @export
 #'
 #' @examples
@@ -32,6 +32,7 @@ finish_setup <- function(){
     save_as = "7_Annual_Summary/1_import_data_to_template.R",
     package = "erieacoustics"
   )
+
     usethis::use_template(
       template = "export_from_EV.R",
       save_as = "7_Annual_Summary/2_export_data_from_EV.R",
@@ -46,8 +47,14 @@ finish_setup <- function(){
   )
 
   usethis::use_template(
+    template = "sample_grids_select.R",
+    save_as = "1_Annual_Protocol/1_Select_Sample_Grids.R",
+    package = "erieacoustics"
+  )
+
+  usethis::use_template(
     template = "annual_survey_template.Rmd",
-    save_as = "1_Annual_Protocol/1_Project_Proposal_Summary.Rmd",
+    save_as = "1_Annual_Protocol/2_Project_Proposal_Summary.Rmd",
     package = "erieacoustics"
   )
 

@@ -6,9 +6,6 @@
 \usage{
 finish_setup()
 }
-\value{
-
-}
 \description{
 Several of the analysis procedures rely on custom functions. Rather than a
 vignette approach, this function copies template analysis scripts that establish a workflow
