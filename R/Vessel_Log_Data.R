@@ -1,0 +1,11 @@
+#' Vessel Log
+#' @name Vessel_Log
+#' @description This table contains a vessel log for using during data collection.
+#' @return dataframe
+#' @export
+#'
+#' @examples
+#' data("Vessel_Log")
+#' head(Vessel_Log)
+
+data("Vessel_Log")

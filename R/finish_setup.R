@@ -45,10 +45,25 @@ finish_setup <- function(){
     package = "erieacoustics"
   )
 
+  usethis::use_template(
+    template = "annual_survey_template.Rmd",
+    save_as = "1_Annual_Protocol/1_Project_Proposal_Summary.Rmd",
+    package = "erieacoustics"
+  )
+
   rmarkdown::render("6_Misc/Calibration_Instructions_Notes.Rmd")
   rmarkdown::render("ReadMe.md")
 
   usethis::ui_done("ReadMe file rendered to html")
   usethis::ui_done("`1_import_data_to_template.R` file created in `7_Annual_Summary`")
   usethis::ui_done("Calibration help file created.")
+
+  usethis::use_template(
+    template = "aggregate_format_data.R",
+    save_as = "7_Annual_Summary/3_aggregate_format_data.R",
+    package = "erieacoustics"
+  )
 }
+
+
+
