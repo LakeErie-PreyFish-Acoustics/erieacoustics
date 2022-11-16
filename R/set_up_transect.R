@@ -18,7 +18,7 @@
 #' @importFrom RDCOMClient COMCreate
 #' @importFrom RDCOMClient createCOMReference
 #' @import RDCOMClient
-#' @return
+#' @return NULL
 #' @export
 #'
 #'
