@@ -59,8 +59,20 @@ finish_setup <- function(){
   usethis::ui_done("Calibration help file created.")
 
   usethis::use_template(
-    template = "aggregate_format_data.R",
-    save_as = "7_Annual_Summary/3_aggregate_format_data.R",
+    template = "aggregate_format_hydro_data.R",
+    save_as = "7_Annual_Summary/3_aggregate_format_hydro_data.R",
+    package = "erieacoustics"
+  )
+
+  usethis::use_template(
+    template = "aggregate_format_wcp_data.R",
+    save_as = "7_Annual_Summary/4_aggregate_format_wcp_data.R",
+    package = "erieacoustics"
+  )
+
+  usethis::use_template(
+    template = "aggregate_format_trawl_data.R",
+    save_as = "7_Annual_Summary/5_aggregate_format_trawl_data.R",
     package = "erieacoustics"
   )
 
@@ -69,6 +81,25 @@ finish_setup <- function(){
     save_as = "5_Enviro_Data/Water_Column_Profiles.csv",
     package = "erieacoustics"
   )
+
+  usethis::use_template(
+    template = "Trawl_Effort.csv",
+    save_as = "4_Trawl_Data/Trawl_Effort.csv",
+    package = "erieacoustics"
+  )
+
+  usethis::use_template(
+    template = "Trawl_Catch.csv",
+    save_as = "4_Trawl_Data/Trawl_Catch.csv",
+    package = "erieacoustics"
+  )
+
+  usethis::use_template(
+    template = "Trawl_Length.csv",
+    save_as = "4_Trawl_Data/Trawl_Length.csv",
+    package = "erieacoustics"
+  )
+
 }
 
 
