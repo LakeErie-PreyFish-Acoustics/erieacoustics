@@ -18,12 +18,11 @@ sample_grids_final <- function(basin, year){
 ## if not - print error message
 pck_list <- c('eriespatial','magrittr','dplyr','sf','base','readr','ggplot2')
 
-for(i in 1:length(pck_list)){
-  if(!pck_list[i] %in% installed.packages()){
-    usethis::ui_oops(paste(pck_list[i]," package is not installed but is required for this function"))
-    stop(paste0("use install.packages(",pck_list[i],") to install sf package"))
-    }
-}
+is_installed <- pck_list %in% installed.packages()
+if(!all(is_installed)){
+  missing <- pck_list[!is_installed]
+  stop(paste0("\nuse install.packages(", missing,") to install ", missing," package"))
+  }
 
 ## load packages
 library(eriespatial)
