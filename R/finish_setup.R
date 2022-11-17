@@ -63,6 +63,12 @@ finish_setup <- function(){
     save_as = "7_Annual_Summary/3_aggregate_format_data.R",
     package = "erieacoustics"
   )
+
+  usethis::use_template(
+    template = "Water_Column_Profiles.csv",
+    save_as = "5_Enviro_Data/Water_Column_Profiles.csv",
+    package = "erieacoustics"
+  )
 }
 
 
