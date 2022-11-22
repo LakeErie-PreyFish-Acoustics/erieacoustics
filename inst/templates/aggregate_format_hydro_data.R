@@ -25,13 +25,13 @@
 # ----
 
 ## double check that all required packages are installed
-pck_list <- c('dplyr','readr','magrittr','base','magrittr','utils','stats')
+pck_list <- c('dplyr','readr','magrittr','base','magrittr','stats','tidyr')
 
 is_installed <- pck_list %in% installed.packages()
 if(!all(is_installed)){
   missing <- pck_list[!is_installed]
   stop(paste0("\nuse install.packages(", missing,") to install ", missing," package"))
-  }
+}
 
 
 ## load packages
@@ -39,8 +39,8 @@ library(readr)
 library(dplyr)
 library(base)
 library(magrittr)
-library(utils)
 library(stats)
+library(tidyr)
 
 
 ## Gather a list of all files from /3_Ping_Data directory
@@ -74,7 +74,7 @@ hacdat$sigma_bs <- base::ifelse(hacdat$TS_mean == 9999, NA,  hacdat$sigma_bs) # 
 ## impute missing sigma_bs_adj data - replace missing and Nv flagged sigma_bs values with mean of interval
 hacdat <- hacdat %>%
   dplyr::group_by(BASIN, STRATUM, GRID, LAYER) %>%
-  dplyr::mutate_at(vars(sigma_bs), ~replace_na(., mean(., na.rm = TRUE)))
+  dplyr::mutate_at(vars(sigma_bs), ~tidyr::replace_na(., mean(., na.rm = TRUE)))
 hacdat$TS_mean <- 10*base::log10(hacdat$sigma_bs) # convert sigma_bs back to TS_mean using imputed values
 
 ## Calculate fish density:
@@ -87,13 +87,13 @@ hacdat$NperHa <- base::with(hacdat, (PRC_ABC/sigma_bs*10000)) # PRC_ is a region
 
 ## Reduce hacdat to essential columns
 hacdat <-hacdat %>% dplyr::select(BASIN, STRATUM, GRID, LAYER, Interval, Date_M, Time_M, Lat_M.x, Lon_M.x,
-                           Sv_mean, PRC_ABC, sigma_bs, TS_mean,Num_targets, NperHa, Exclude_below_line_depth_mean.x) %>%
-                    dplyr::rename(Lat_M = Lat_M.x) %>%
-                    dplyr::rename(Lon_M = Lon_M.x) %>%
-                    dplyr::rename(BottomLine = Exclude_below_line_depth_mean.x)
+                                  Sv_mean, PRC_ABC, sigma_bs, TS_mean,Num_targets, NperHa, Exclude_below_line_depth_mean.x) %>%
+  dplyr::rename(Lat_M = Lat_M.x) %>%
+  dplyr::rename(Lon_M = Lon_M.x) %>%
+  dplyr::rename(BottomLine = Exclude_below_line_depth_mean.x)
 
 ## write hacdat data to file
-utils::write.csv(hacdat, "7_Annual_Summary/hacdat.csv")
+readr::write_csv(hacdat, "7_Annual_Summary/hacdat.csv")
 
 
 
@@ -112,12 +112,12 @@ histo$LAYER <- base::sapply(base::strsplit(histo$Region_name, "_"), '[',4)
 ## Reduce histo to essential columns and transform to long form
 ## TS columns to rows with replicated data
 histo <- histo %>% dplyr::select(BASIN, STRATUM, GRID, LAYER, Date_M, Time_M, Lat_M, Lon_M, Interval,
-                          Targets_Binned, Attribute, `-64.500000`:`-20.500000`) %>%
-                   dplyr::pivot_longer(`-64.500000`:`-20.500000`, names_to = "TS_bin") %>%
-                   dplyr::pivot_wider(names_from = "Attribute")
+                                 Targets_Binned, Attribute, `-64.500000`:`-20.500000`) %>%
+  tidyr::pivot_longer(`-64.500000`:`-20.500000`, names_to = "TS_bin") %>%
+  tidyr::pivot_wider(names_from = "Attribute")
 
 ## write histo data to file
-utils::write.csv(histo, "7_Annual_Summary/histo.csv")
+readr::write_csv(histo, "7_Annual_Summary/histo.csv")
 
 
 
@@ -125,49 +125,5 @@ utils::write.csv(histo, "7_Annual_Summary/histo.csv")
 histohac<-dplyr::left_join(hacdat, histo, by = c("BASIN","STRATUM", "GRID", "LAYER", "Interval", "Date_M", "Time_M"))
 
 ## write histohac data to file
-utils::write.csv(histohac, "7_Annual_Summary/histohac.csv")
+readr::write_csv(histohac, "7_Annual_Summary/histohac.csv")
 
-
-
-## Import and bind together EpiLayeLine_Final.csv files
-## Import and bind together BottomLine_Final.csv files
-epi <- base::grep(allfiles, pattern = "EpiLayerLine_Final\\.csv$", value = T)
-bot <- base::grep(allfiles, pattern = "BottomLine_Final\\.csv$", value = T)
-
-## extract GRID numbers from file path names
-GRID <- NULL
-for(i in 1:base::length(epi)) GRID[i] <- (base::substring(epi[i], 20, 23))
-
-## Import EpiLayerLine_Final data and append GRID numbers
-epi <- (base::lapply(epi, readr::read_csv))
-for(i in 1:base::length(GRID)) epi[[i]]$GRID <- GRID[i]
-epi <- dplyr::bind_rows(epi)
-
-## Import BottomLine_Final data and append GRID numbers
-bot<-(base::lapply(bot, readr::read_csv))
-for(i in 1:base::length(GRID)) bot[[i]]$GRID <- GRID[i]
-bot <- dplyr::bind_rows(bot)
-
-## write combine EpiLayerLines.csv and BottomLines.csv to file
-utils::write.csv(epi,"7_Annual_Summary/EpiLayerLines.csv")
-utils::write.csv(bot,"7_Annual_Summary/BottomLines.csv")
-
-## average, min, max EpiLayer depths
-epi_avg  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="mean")
-epi_min  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="min")
-epi_max  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="max")
-epi_line <- base::cbind(epi_avg, epi_min[,2], epi_max[,2])
-base::colnames(epi_line)[2:4] <- c("epi_avg","epi_min","epi_max")
-
-## average, min, max BottomLayer depths
-bot_avg  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="mean")
-bot_min  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="min")
-bot_max  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="max")
-bot_line <- base::cbind(bot_avg, bot_min[,2], bot_max[,2])
-base::colnames(bot_line)[2:4] <- c("bot_avg","bot_min","bot_max")
-
-## join EpiLayerLine and BottomLine summaries together
-epi_bot_lines <- dplyr::left_join(epi_line,bot_line, by="GRID")
-
-## write to file
-utils::write.csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")

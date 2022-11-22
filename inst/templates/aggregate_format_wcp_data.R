@@ -22,7 +22,7 @@
 # ----
 
 ## double check that all required packages are installed
-pck_list <- c('dplyr','readr','magrittr','base','magrittr','utils','stats')
+pck_list <- c('dplyr','readr','magrittr','base','magrittr','stats')
 
 is_installed <- pck_list %in% installed.packages()
 if(!all(is_installed)){
@@ -36,7 +36,6 @@ library(readr)
 library(dplyr)
 library(base)
 library(magrittr)
-library(utils)
 library(stats)
 
 
@@ -63,8 +62,8 @@ for(i in 1:base::length(GRID)) bot[[i]]$GRID <- GRID[i]
 bot <- dplyr::bind_rows(bot)
 
 ## write combine EpiLayerLines.csv and BottomLines.csv to file
-#utils::write.csv(epi,"7_Annual_Summary/EpiLayerLines.csv")
-#utils::write.csv(bot,"7_Annual_Summary/BottomLines.csv")
+#readr::write_csv(epi,"7_Annual_Summary/EpiLayerLines.csv")
+#readr::write_csv(bot,"7_Annual_Summary/BottomLines.csv")
 
 ## average, min, max EpiLayer depths
 epi_avg  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="mean")
@@ -84,7 +83,7 @@ base::colnames(bot_line)[2:4] <- c("bot_avg","bot_min","bot_max")
 epi_bot_lines <- dplyr::left_join(epi_line,bot_line, by="GRID")
 
 ## write to file
-#utils::write.csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")
+readr::write_csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")
 
 ## read in water column profile data
 wcp <- readr::read_csv("5_Enviro_Data/Water_Column_Profiles.csv")
@@ -93,7 +92,4 @@ wcp <- readr::read_csv("5_Enviro_Data/Water_Column_Profiles.csv")
 wcpdat <- dplyr::left_join(wcp,epi_bot_lines, by="GRID")
 
 ## write to file
-utils::write.csv(wcpdat, "7_Annual_Summary/wcpdat.csv")
-
-
-
+readr::write_csv(wcpdat, "7_Annual_Summary/wcpdat.csv")
