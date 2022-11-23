@@ -1,12 +1,16 @@
 ---
-title: "2022 Lake Erie East Basin Hydroacoustic Survey"
-author: "Jeremy Holden"
-date: '2022-06-20'
+title: "Lake Erie Pelagic Forage Fish Survey: **add basin and year**"
+author: "**add PI name**"
+date: '**add Date**'
 output:
+  pdf_document: default
   html_document:
     toc: yes
     toc_float: yes
-  
+header-includes: 
+ \usepackage{float}
+ \floatplacement{figure}{H}
+ \floatplacement{table}{H}
 ---
 
 ```{r load-packages, include =FALSE}
@@ -16,70 +20,80 @@ library(lubridate)
 library(knitr)
 library(kableExtra)
 library(Hmisc)
+library(magrittr)
+library(erieacoustics)
+library(eriespatial)
+library(readr)
+library(float)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-```
-```{r set-dates, include=FALSE}
+
+## set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
+basin = "EB" 
+year = 2022
+
+## set survey start and end dates
 start_date <- "2022-07-17"
 end_date <- "2022-07-23"
+
+## automatically select sunset/sunrise locations
+if(basin == "WB"){
+location_name <- "Sandusky, Ohio"
+lat1 <- 41.464913
+lon1 <- -82.703106
+} else if(basin == "CB"){
+location_name <- "Fairport Harbor, Ohio"
+lat1 <- 41.768908
+lon1 <- -81.281704
+} else if(basin == "EB"){
+location_name <- "Long Point, Ontario"
+lat1 <- 42.565354
+lon1 <- -80.005205
+} else {print("check basin name")}
 ```
+
 <!-- The template requires two external files -->
-<!-- 1. Effort allocation table in csv format -->
-<!-- 2. Random point selection -->
+<!-- 1. sample_grids_final.png -->
+<!-- 2. sample_grids_final.csv -->
 <!-- Update these files as required or delete the sections that use them -->
 <!-- Edit other text as required -->
 
-## Project Proposal
+## Project Details
 
--   Project Name: Lake Erie East Basin Hydroacoustic Survey
--   Project Code: LEA_IA22_EBA
--   Project Lead: Jeremy Holden
+-   Project Name: **add agency specific project name**
+-   Project Code: **add agency specific project code** 
+-   Project Lead: **add PI name**
 -   Start Date: `r start_date`
 -   End Date: `r end_date`
-
-## Important Notes for 2022
-
-1.  The historical cross-lake transect approach will be replaced with the FTG recommended random grid approach.
-
-2.  The east basin strata have been redesigned to allocate greater effort to areas where variation has generally been higher compared to other strata.
-
-3.  Eastern strata will be conducted after missing 2020 and 2021. Docking is available at Port Maitland which reduces vessel transit time.
-
-4.  US waters will be surveyed however the survey will operate such that docking in US ports is not required.
-
-5.  Midwater trawling will not be conducted in the eastern basin. The analysis will rely on the assumption that all age-1+ sized targets in the hypolimnion are considered yearling-and-older Rainbow Smelt.
-
-6. Terminology: throughout the documentation *transect* will refer to the historic cross-lake transects whereas *grid* will be used to refer to the short (5km) transects that have been randomly allocated using a 5 minute grid applied to the strata.
-
-## Abstract
-
-Although not native, Rainbow Smelt are a dominant forage species in Lake Erie and contribute significantly to Ontario's commercial fish landings. A summer fisheries hydroacoustic survey has been conducted in the east basin since 1993 to provide estimates of the distribution and abundance of Rainbow Smelt. Hydroacoustic surveys are a remote sensing technique that uses sound to sample nearly the entire water column. Surveys generally use a stratified transect approach to distribute effort throughout the area of interest. Companion midwater trawling is often used to apply fish abundance estimates to species specific abundance.
-
-Unlike other Lake Erie acoustic surveys in the west and central basins, companion trawling is not routinely conducted in the east basin. Historical trawling efforts found that \>95% of the fish caught in coldwater habitat were yearling and old Rainbow Smelt. Early surveys were conducted multiple times throughout the year (2 seasons from 1993-1997, 3 seasons 1998-1999, July only since 2000). The July survey window maximizes the separation between young-of-year and age-1+ Rainbow Smelt in the water column. The current approach assumes that all targets of the appropriate size are age-1+ Rainbow Smelt.
-
-The survey uses a stratified random approach to allocate effort. The original design was based off a fixed transect design that provided spatial coverage throughout the basin. In 1998, the survey was redesigned to include a random grid approach within defined strata. Historically, the east basin was split into 6 strata, and 2 randomly chosen north-south transects in each strata were surveyed, for a total of 12 transects. In 2022, a new stratified random approach was implemented. The design utilizes a greater number of strata that are based on the historic strata but are augmented with strata that account for greater variation in north/south distribution and across depth strata. Additional details are available in the Lake Erie Forage Task Group (FTG) Annual Reports.
+-   Vessel: **add vessel name**
+-   System: **add hydroacoustic system description**
 
 ## Lake Erie Committee Charge
-> Continue hydro acoustic assessment of the pelagic forage fish community in Lake Erie, while incorporating new methods in survey design and analysis following the GLFC’s Great Lakes Hydro Acoustic Standard Operating Procedures where possible/feasible. 
+> Continue hydroacoustic assessment of the pelagic forage fish community in Lake Erie, while incorporating new methods in survey design and analysis following the GLFC’s Great Lakes Hydro Acoustic Standard Operating Procedures where possible/feasible. 
 
-## Survey Overview
+## Survey Background and Goals
 
-The East Basin hydroacoustic sampling is conducted out of the Lake Erie Management Unit Office in Port Dover, ON. The survey is conducted using a Simrad EK60 system with a 120kHz split beam transducer on the NDMNRF research vessel *Erie Explorer*. Hydroacoustic data collection should follow guidelines set in the GLSOP including 0.4 msec pulse duration, 4 pings per second, -130 dB collection threshold, and -10 dB reduction in power output. Set collection depth to 2.5 times the maximum depth encountered across the entire continuous transect. Ping times should be restricted to 30 minutes after sunset to 30 minutes before sunrise ([Sunset Times]). Temperature profiles should be taken frequently throughout the night but not necessarily needed at each transect when there are several in close proximity. Minimally, a temperature profile should be collected within a strata that is surveyed.
+**add basin specific survey background and goals - may carry over from previous year**
 
-## Strata
+## Important Notes for `r basin` `r year`
 
-Sample allocation across strata has been reallocated based on the variability observed in historic surveys ([Survey Map], [Survey Points]). See FTG report for additional details on methodology on how the strata were developed. Within each strata a variable number of survey grids have been randomly selected. The grid coordinates are for the midpoint of the grid. Pinging can be conducted in any direction such that the 5 km of pinging (approx. 2.8 nm or 33 minutes of pinging at 5 kts)  starts, ends or simply passes through the coordinates. 
+**1.  add bulleted list of important notes associated with `r basin` `r year`"** 
 
-## Data Management
-Each grid transect should be saved in it's own folder in the the *3_Ping_Data* directory. During data collection files should also have a prefix with the grid reference name (i.e. *WB_S01_G193*). This approach provides a structure that is required during the data analysis using the standard tools contained in `erieacoustics`. Data should be backed up daily on both the LEMU external acoustic drive and the project external data stick. At the completion of the survey data should be uploaded to a sharepoint folder. At the completion of the analysis, data should be standardized to the lake unit standard data template and uploaded to the Great Lakes Information System.
+## Random Stratified Survey Desgin
+The redesigned Lake Erie hydroacoustic survey uses a random stratified sampling design. Sample strata for each basin (West, Central, and East) were developed from a combination of historical environmental, trawl, and hydroacoustic data. Effort allocation across strata is based on stratum size and the variability observed in historic hydroacoustic surveys ([Effort Allocation]). Within each strata, a fixed number of 5-minute grids are randomly selected and then adjusted to facilitate logistical constraints, if needed ([Survey Map],[Survey Points]). Grid coordinates (midpoint), direct hydroacoustic sampling. Data collection can be conducted in any direction such that the 5-km effort (approx. 2.8 nm or 33 minutes of pinging at 5 kts) starts, ends or simply passes through the coordinates. Trawling efforts ([Trawl Depths], [Survey Points]) should target waters within the grid boundaries.   
+
+## Data Collection and Management
+The survey will take place during the new moon phase in July. Hydroacoustic data collection should follow guidelines set in the GLSOP including 0.4 msec pulse duration, 4 pings per second, -130 dB collection threshold, and -10 dB reduction in power output. Set collection depth to 2.5 times the maximum depth encountered across the entire continuous transect. Ping times should be restricted to 30 minutes after sunset to 30 minutes before sunrise ([Sunset Times]). 
+
+Each grid transect should be saved in it's own folder in the the *3_Ping_Data* directory. During data collection files should include a prefix that denotes basin, stratum, and grid names (i.e. *WB_S01_G193*). This approach provides the structure required during the data analysis using the standard tools contained in `erieacoustics`. Files should also include a suffix noting the collection vessel (i.e., *almar*, *muskie*, *erie_explorer*). Data should be backed up daily on both an external acoustic drives.
+
+Temperature profiles should be taken frequently throughout the night but not necessarily needed at each transect when there are several in close proximity. Minimally, a temperature profile should be collected within a strata that is surveyed.
+
+A vessel log ([Vessel Log]) is provided to document data collection procedures and events.
+
+Paired midwater trawling should be conducted with in each grid with 'Survey' priority ([Survey Points]). Midwater trawling should follow established protocols, with number of trawls per grid and target depths outlined in [Survey Points] and [Trawl Depths]. 
 
 
 ```{r sunset-setup}
-# edit lat1 and lon1 as required for each basin
-# Long Point, EB
-location_name <- "Long Point"
-lat1 <- 42.565354
-lon1 <- -80.005205
-
 hac_dates <- seq(ymd(start_date), ymd(end_date), by = "1 day")
 LP_sun <-getSunlightTimes(hac_dates, lat = lat1, lon = lon1, 
                  keep=c("sunrise", "sunset"),tz = "EST")
@@ -94,46 +108,43 @@ LP_sun <- LP_sun %>%
 
 
 ## Sunset Times
-Sunrise and sunset times have been calculated for `r location_name`, Lake Erie.
-
 ```{r sunset}
-sunset_caption <- paste0("Sunrise and sunset times for ", location_name, " Lake Erie")
-LP_sun %>% 
-  kbl(caption = sunset_caption) %>%
-   kable_classic(full_width = F, html_font = "Cambria")
-
+knitr::kable(LP_sun, align = "llcc", caption= paste0("Table 1. Sunrise and sunset times for ", location_name, ", Lake Erie"), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
 
 ## Effort Allocation
-
-Strata effort has been allocated based on the amount of variability observed within the strata during historical surveys.
-
 ```{r strata-allocation}
-effort <- read.csv("1_Annual_Protocol/eb_effort_allocation.csv")
-effort <- effort %>% select(STRATUM, area_km2, n_trans_eq) %>% 
+effort <- filter(Effort_Allocation,BASIN == basin) %>% 
+  select(STRATUM, area_km2, n_trans_eq) %>% 
   rename(Stratum = STRATUM, `Area (km2)` = area_km2, `N Transects` = n_trans_eq)
 
-effort %>% 
-  kbl(caption = "Recommended minimum sampling effort by strata") %>%
-  kable_classic(full_width = F, html_font = "Cambria")
+knitr::kable(effort, align = "lcc", caption= paste0("Table 2. Recommended minimum sampling effort by strata"), booktabs = T) %>% kable_styling(latex_options = "striped")
+```
 
+\newpage
+## Trawl Depths
+```{r, trawl-depths}
+options(knitr.kable.NA = '')
+knitr::kable(Trawl_Depths, caption= "Table 4. Midwater trawl footrope depths for nearshore and offshore strata - representing maximum number (See Table 3). Footrope depth may be adjusted according to forage fish depth distribution observed on sonar.", booktabs = T) %>% kable_styling(latex_options = "striped", stripe_index = c(1:3))
 ```
 
 \newpage
 
-## Survey Map
-
-```{r survey-map, fig.cap="Survey points for 2022 new survey design"}
-load("1_Annual_Protocol/eb_random_survey_points.Rdata")
-surveymap
-```
+## Survey Map  
+![Figure 1. Final 5-minute sample grids for `r basin` `r year` pelagic forage fish survey - attempt 'Extra' grids if feasible for hydroacoustics only.](sample_grids_final.png){height=100% width=100% }
 
 \newpage
 ## Survey Points
 ```{r survey-points}
-surveypoints %>% 
-  select(-lat, -lon) %>% 
-  kbl(caption = "Random centroids for 2022 east basin survey") %>% 
-  kable_classic(full_width = F, html_font = "Cambria", font_size = 10)
+grids <- read_csv("sample_grids_final.csv")
+knitr::kable(grids[,-1], align = "cccccl", caption= paste("Table 3. Final 5-minute sample grids for", basin,2022,"pelagic forage fish survey - see Table 3 for grid specific trawl descriptions."), booktabs = T) %>% kable_styling(latex_options = "striped")
+```
+
+
+\newpage
+## Vessel Log
+```{r vessel-log}
+options(knitr.kable.NA = '')
+knitr::kable(Vessel_Log, align = "cccc", caption= "Table 5. Hydroacoustic vessel log for recording date, times, and events.", booktabs = T) %>% kable_styling(font_size = 11, latex_options = "striped")
 ```
