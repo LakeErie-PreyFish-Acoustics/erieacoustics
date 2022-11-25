@@ -21,75 +21,58 @@
 
 # ----
 
-## double check that all required packages are installed
-pck_list <- c('dplyr','readr','magrittr','base','magrittr','stats')
-
-is_installed <- pck_list %in% installed.packages()
-if(!all(is_installed)){
-  missing <- pck_list[!is_installed]
-  stop(paste0("\nuse install.packages(", missing,") to install ", missing," package"))
-  }
-
-
-## load packages
+## suggested packages
 library(readr)
 library(dplyr)
 library(base)
 library(magrittr)
-library(stats)
 
 
 ## Gather a list of all files from /3_Ping_Data directory
-allfiles<-base::dir('3_Ping_Data', recursive = T, full.names = T)
+allfiles <- dir('3_Ping_Data', recursive = T, full.names = T)
 
 ## Import and bind together EpiLayeLine_Final.csv files
 ## Import and bind together BottomLine_Final.csv files
-epi <- base::grep(allfiles, pattern = "EpiLayerLine_Final\\.csv$", value = T)
-bot <- base::grep(allfiles, pattern = "BottomLine_Final\\.csv$", value = T)
+epi <- grep(allfiles, pattern = "EpiLayerLine_Final\\.csv$", value = T)
+bot <- grep(allfiles, pattern = "BottomLine_Final\\.csv$", value = T)
 
 ## extract GRID numbers from file path names
 GRID <- NULL
-for(i in 1:base::length(epi)) GRID[i] <- (base::substring(epi[i], 20, 23))
+for(i in 1:length(epi)) GRID[i] <- (substring(epi[i], 20, 23))
 
 ## Import EpiLayerLine_Final data and append GRID numbers
-epi <- (base::lapply(epi, readr::read_csv))
-for(i in 1:base::length(GRID)) epi[[i]]$GRID <- GRID[i]
-epi <- dplyr::bind_rows(epi)
+epi <- (lapply(epi, read_csv))
+for(i in 1:length(GRID)) epi[[i]]$GRID <- GRID[i]
+epi <- bind_rows(epi)
 
 ## Import BottomLine_Final data and append GRID numbers
-bot<-(base::lapply(bot, readr::read_csv))
-for(i in 1:base::length(GRID)) bot[[i]]$GRID <- GRID[i]
-bot <- dplyr::bind_rows(bot)
+bot<-(lapply(bot, read_csv))
+for(i in 1:length(GRID)) bot[[i]]$GRID <- GRID[i]
+bot <- bind_rows(bot)
 
 ## write combine EpiLayerLines.csv and BottomLines.csv to file
 #readr::write_csv(epi,"7_Annual_Summary/EpiLayerLines.csv")
 #readr::write_csv(bot,"7_Annual_Summary/BottomLines.csv")
 
 ## average, min, max EpiLayer depths
-epi_avg  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="mean")
-epi_min  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="min")
-epi_max  <- stats::aggregate(Depth ~ GRID, data=epi, FUN="max")
-epi_line <- base::cbind(epi_avg, epi_min[,2], epi_max[,2])
-base::colnames(epi_line)[2:4] <- c("epi_avg","epi_min","epi_max")
+epi_line <- epi %>% group_by(GRID) %>%
+  summarise(epi_avg = mean(Depth), epi_min = min(Depth), epi_max = max(Depth))
 
 ## average, min, max BottomLayer depths
-bot_avg  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="mean")
-bot_min  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="min")
-bot_max  <- stats::aggregate(Depth ~ GRID, data=bot, FUN="max")
-bot_line <- base::cbind(bot_avg, bot_min[,2], bot_max[,2])
-base::colnames(bot_line)[2:4] <- c("bot_avg","bot_min","bot_max")
+bot_line <- bot %>% group_by(GRID) %>%
+  summarise(bot_avg = mean(Depth), bot_min = min(Depth), bot_max = max(Depth))
 
 ## join EpiLayerLine and BottomLine summaries together
-epi_bot_lines <- dplyr::left_join(epi_line,bot_line, by="GRID")
+epi_bot_lines <- left_join(epi_line, bot_line, by = "GRID")
 
 ## write to file
-readr::write_csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")
+write_csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")
 
 ## read in water column profile data
-wcp <- readr::read_csv("5_Enviro_Data/Water_Column_Profiles.csv")
+wcp <- read_csv("5_Enviro_Data/Water_Column_Profiles.csv")
 
 ## join files together
-wcpdat <- dplyr::left_join(wcp,epi_bot_lines, by="GRID")
+wcpdat <- left_join(wcp, epi_bot_lines, by = "GRID")
 
 ## write to file
-readr::write_csv(wcpdat, "7_Annual_Summary/wcpdat.csv")
+write_csv(wcpdat, "7_Annual_Summary/wcpdat.csv")

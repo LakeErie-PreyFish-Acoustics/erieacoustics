@@ -25,17 +25,7 @@
 
 # ----
 
-## double check that all required packages are installed
-pck_list <- c('dplyr','readr','magrittr','base','reshape2')
-
-is_installed <- pck_list %in% installed.packages()
-if(!all(is_installed)){
-  missing <- pck_list[!is_installed]
-  stop(paste0("\nuse install.packages(", missing,") to install ", missing," package"))
-  }
-
-
-## load packages
+## suggested packages
 library(readr)
 library(dplyr)
 library(reshape2)
@@ -43,82 +33,88 @@ library(base)
 library(magrittr)
 
 ## bring in effort, catch, and length data
-eff <- readr::read_csv("4_Trawl_Data/Trawl_Effort.csv") %>%
-  dplyr::filter(EFFST == 1) %>%
-  dplyr::filter(complete.cases(GRID_10M)) %>%
-  dplyr::rename(time = EFFTM0)
-eff$GRID <- paste0("G",eff$GRID_10M)
+eff <- read_csv("4_Trawl_Data/Trawl_Effort.csv") %>%
+  filter(EFFST == 1) %>%
+  filter(complete.cases(GRID_10M)) %>%
+  rename(time = EFFTM0)
+eff$GRID <- paste0("G", eff$GRID_10M)
 
-cat <- readr::read_csv("4_Trawl_Data/Trawl_Catch.csv")
-len <- readr::read_csv("4_Trawl_Data/Trawl_Length.csv")
-epi <- readr::read_csv("5_Enviro_Data/EpiBotLineSummaries.csv")
+cat <- read_csv("4_Trawl_Data/Trawl_Catch.csv")
+len <- read_csv("4_Trawl_Data/Trawl_Length.csv")
+epi <- read_csv("5_Enviro_Data/EpiBotLineSummaries.csv")
 
 ## group species for analysis
-cat$an_grp <- base::ifelse(cat$SPC == 121 & cat$GRP == 1, "RSYOY",
-                           base::ifelse(cat$SPC == 121 & cat$GRP != 1, "RSYAO",
-                                        base::ifelse(cat$SPC == 196, "ES",
-                                                     base::ifelse(cat$SPC == 331 & cat$GRP == 1, "YPYOY", "OTHER"))))
+cat <- cat %>% mutate(SpcGrp = case_when( SPC == 121 & GRP == 1 ~ "RSYOY",
+                                          SPC == 121 & GRP != 1 ~ "RSYAO",
+                                          SPC == 196 ~ "ES",
+                                          SPC == 331 & GRP == 1~ "YPYOY",
+                                          TRUE ~ "OTHER"
+)
+)
 
 ## generate catch proportions by species group for each trawl
 cat_an <- cat %>%
-  dplyr::group_by(SAM,an_grp) %>%
-  dplyr::summarize(CATCNT = sum(CATCNT)) %>%
-  reshape2::dcast(SAM ~ an_grp)
+  group_by(SAM, SpcGrp) %>%
+  summarize(CATCNT = sum(CATCNT))
+
+
+## sum totals across species groups
+cat_an_tot <- cat_an %>% group_by(SAM) %>% summarise(TOTAL = sum(CATCNT))
+cat_an <- left_join(cat_an, cat_an_tot, by="SAM")
+cat_an$PROP <- cat_an$CATCNT/cat_an$TOTAL
+
+## pivot wider and join totals
+cat_an <- cat_an %>% pivot_wider(names_from = "SpcGrp", values_from = c("CATCNT","PROP"))
 
 ## set NA values to 0
-cat_an[base::is.na(cat_an)] = 0
-
-## sum across species groups
-for(i in 1:base::dim(cat_an)[1]) cat_an$TOTAL[i] <- base::sum(cat_an[i,2:6])
-for(i in 1:base::dim(cat_an)[1]) cat_an$ES_p <- cat_an$ES/cat_an$TOTAL
-for(i in 1:base::dim(cat_an)[1]) cat_an$OTHER_p <- cat_an$OTHER/cat_an$TOTAL
-for(i in 1:base::dim(cat_an)[1]) cat_an$RSYAO_p <- cat_an$RSYAO/cat_an$TOTAL
-for(i in 1:base::dim(cat_an)[1]) cat_an$RSYOY_p <- cat_an$RSYOY/cat_an$TOTAL
-for(i in 1:base::dim(cat_an)[1]) cat_an$YPYOY_p <- cat_an$YPYOY/cat_an$TOTAL
+cat_an[is.na(cat_an)] = 0
 
 ## merge eff and cat_an
-eff_cat_an <- dplyr::left_join(eff,cat_an,by="SAM")
-eff_cat_an <- dplyr::left_join(eff_cat_an, epi, by="GRID")
-eff_cat_an$LAYER <- base::ifelse(eff_cat_an$GRDEP <= eff_cat_an$epi_avg, "EPI","HYP")
+eff_cat_an <- left_join(eff, cat_an, by = "SAM")
+eff_cat_an <- left_join(eff_cat_an, epi, by = "GRID")
+eff_cat_an$LAYER <- ifelse(eff_cat_an$GRDEP <= eff_cat_an$epi_avg, "EPI", "HYP")
 
-## subset data to pertinent columns and switch to long form
-trwldat_c <- eff_cat_an %>% dplyr::select(month, day, year, time, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, ES, OTHER, RSYAO, RSYOY, YPYOY, TOTAL) %>%
-  reshape2::melt(id.vars = c("month","day","year","time","STRATUM","GRID", "LatDec", "LonDec", "SIDEP", "GRDEP", "LAYER")) %>%
-  dplyr::rename(SpcGrp = variable) %>%
-  dplyr::rename(catch=value)
+## subset data to pertinent columns, switch to long form, and align SpcGrp names
+trwldat_c <- eff_cat_an %>% select(month, day, year, time, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, CATCNT_RSYAO, CATCNT_RSYOY, CATCNT_ES, CATCNT_YPYOY, CATCNT_OTHER, TOTAL) %>%
+  pivot_longer(cols = c("CATCNT_RSYAO", "CATCNT_RSYOY", "CATCNT_ES", "CATCNT_YPYOY", "CATCNT_OTHER", "TOTAL"), names_to = "SpcGrp", values_to = "catch") %>%
+  mutate(SpcGrp = case_when( SpcGrp == "CATCNT_ES" ~ "ES",
+                             SpcGrp == "CATCNT_OTHER" ~ "OTHER",
+                             SpcGrp == "CATCNT_RSYAO" ~ "RSYAO",
+                             SpcGrp == "CATCNT_RSYOY" ~ "RSYOY",
+                             SpcGrp == "CATCNT_YPYOY" ~ "YPYOY",
+                             TRUE ~ "TOTAL"))
 
-trwldat_p <- eff_cat_an %>% dplyr::select(month, day, year, time, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, ES_p, OTHER_p, RSYAO_p, RSYOY_p, YPYOY_p) %>%
-  reshape2::melt(id.vars = c("month","day","year","time","STRATUM","GRID", "LatDec", "LonDec", "SIDEP", "GRDEP", "LAYER")) %>%
-  dplyr::rename(SpcGrp = variable) %>%
-  dplyr::rename(prop=value)
 
-trwldat_p$SpcGrp <- base::ifelse(trwldat_p$SpcGrp == "ES_p", "ES",
-                                 base::ifelse(trwldat_p$SpcGrp == "OTHER_p", "OTHER",
-                                              base::ifelse(trwldat_p$SpcGrp == "RSYAO_p", "RSYAO",
-                                                           base::ifelse(trwldat_p$SpcGrp == "RSYOY_p", "RSYOY", "YPYOY"))))
+trwldat_p <- eff_cat_an %>% select(month, day, year, time, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, PROP_RSYAO, PROP_RSYOY,  PROP_ES, PROP_YPYOY,  PROP_OTHER) %>%
+  pivot_longer(cols = c("PROP_RSYAO", "PROP_RSYOY",  "PROP_ES", "PROP_YPYOY", "PROP_OTHER"), names_to = "SpcGrp", values_to = "prop") %>%
+  mutate(SpcGrp = case_when( SpcGrp == "PROP_ES" ~ "ES",
+                             SpcGrp == "PROP_OTHER" ~ "OTHER",
+                             SpcGrp == "PROP_RSYAO" ~ "RSYAO",
+                             SpcGrp == "PROP_RSYOY" ~ "RSYOY",
+                             TRUE ~ "YPYOY"))
 
-trwldat <- dplyr::left_join(trwldat_c,trwldat_p, by=c("month","day","year","STRATUM","GRID","LatDec","LonDec","SIDEP","GRDEP","LAYER","SpcGrp"))
+trwldat <- left_join(trwldat_c, trwldat_p, by = c("month", "day", "year", 'time',"STRATUM", "GRID", "LatDec", "LonDec", "SIDEP", "GRDEP", "LAYER", "SpcGrp"))
+
+## set NA values to 1
+trwldat[is.na(trwldat)] = 1
 
 ## write to file
-readr::write_csv(trwldat,"7_Annual_Summary/trwldat.csv") # export
+write_csv(trwldat, "7_Annual_Summary/trwldat.csv") # export
 
 ## regroup for analysis
-len$SpcGrp <- base::ifelse(len$SPC == 121 & len$GRP == 1, "RSYOY",
-                           base::ifelse(len$SPC == 121 & len$GRP != 1, "RSYAO",
-                                        base::ifelse(len$SPC == 196, "ES",
-                                                     base::ifelse(len$SPC == 331 & len$GRP == 1, "YPYOY", "OTHER"))))
-
+len <- len %>% mutate(SpcGrp = case_when( SPC == 121 & GRP == 1 ~ "RSYOY",
+                                          SPC == 121 & GRP != 1 ~ "RSYAO",
+                                          SPC == 196 ~ "ES",
+                                          SPC == 331 & GRP == 1 ~ "YPYOY",
+                                          TRUE ~ "OTHER"))
 
 ## merge eff and len
-eff_len <- dplyr::left_join(eff,len,by="SAM")
-eff_len <- dplyr::left_join(eff_len, epi, by="GRID")
-eff_len$LAYER <- base::ifelse(eff_len$GRDEP <= eff_len$epi_avg, "EPI","HYP")
+eff_len <- left_join(eff,len, by = c("month", "day", "year", "SAM"))
+eff_len <- left_join(eff_len, epi, by = "GRID")
+eff_len$LAYER <- ifelse(eff_len$GRDEP <= eff_len$epi_avg, "EPI", "HYP")
 
 ## subset data to pertinent columns and switch to long form
-trwllen <- eff_len %>% dplyr::select(month.x, day.x, year.x, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, SPC, GRP, SpcGrp, TLEN) %>%
-  dplyr::rename(month = month.x) %>%
-  dplyr::rename(day = day.x) %>%
-  dplyr::rename(year = year.x)
+trwllen <- eff_len %>% select(month, day, year, STRATUM, GRID, LatDec, LonDec, SIDEP, GRDEP, LAYER, SPC, GRP, SpcGrp, TLEN)
 
 ## write to file
-readr::write_csv(trwllen,"7_Annual_Summary/trwllen.csv") # export
+write_csv(trwllen, "7_Annual_Summary/trwllen.csv") # export
