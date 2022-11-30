@@ -3,6 +3,8 @@
 export(Analysis_Import_EVcsv)
 export(export_transect_evdata)
 export(finish_setup)
+export(sample_grids_final)
+export(sample_grids_proposed)
 export(set_up_transect)
 import(RDCOMClient)
 importFrom(RDCOMClient,COMCreate)

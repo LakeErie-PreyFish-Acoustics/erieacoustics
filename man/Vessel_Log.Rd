@@ -8,6 +8,7 @@ dataframe
 }
 \description{
 This table contains a vessel log for using during data collection.
+
 }
 \examples{
 data("Vessel_Log")
