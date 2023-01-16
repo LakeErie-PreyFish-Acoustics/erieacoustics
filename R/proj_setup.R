@@ -42,7 +42,7 @@ proj_setup <- function(path, ...) {
     "1. README.md template  ",
     "2. Instructions.md  ",
     "3. A gitignore file has been included. If you have git installed you will still need to run `git init` to initialize the repo.  ",
-    "4. Template folder directory has been created. This directory structure is required for certain funtions to run as intended.  ",
+    "4. Template folder directory has been created. This directory structure is required for certain functions to run as intended.  ",
     "5. Example analysis scripts have been included to assist in utilizing built in functions.  ",
     "  ",
     "## Instructions  ",
