@@ -146,10 +146,10 @@ sample_grids_proposed <- function(basin, year) {
   file <- "1_Annual_Protocol/sample_grids_proposed.png"
 
   if (file.exists(file)) {
-    ggplot2::ggsave(file, plot = p12)
+    ggplot2::ggsave(file, plot = p12, width = 11, height = 5)
     base::print("previous sample_grids_proposed.png was overwritten")
   } else {
-    ggplot2::ggsave(file, plot = p12)
+    ggplot2::ggsave(file, plot = p12, width = 11, height = 5)
     base::print("sample_grids_proposed.png was written to file")
   }
 
