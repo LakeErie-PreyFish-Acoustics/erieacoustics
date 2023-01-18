@@ -171,10 +171,10 @@ sample_grids_proposed <- function(basin, year) {
   file <- "1_Annual_Protocol/sample_grids_proposed.csv"
 
   if (file.exists(file)) {
-    utils::write.csv(sample_grids, file)
+    utils::write.csv(sample_grids, file, row.names = F)
     base::print("previous sample_grids_proposed.csv was overwritten")
   } else {
-    utils::write.csv(sample_grids, file)
+    utils::write.csv(sample_grids, file, row.names = F)
     base::print("sample_grids_proposed.csv written to file")
   }
 
@@ -186,7 +186,7 @@ sample_grids_proposed <- function(basin, year) {
   if (file.exists(file)) {
     base::print("sample_grids_final.csv already exists")
   } else {
-    utils::write.csv(sample_grids, file)
+    utils::write.csv(sample_grids, file, row.names = F)
     base::print("sample_grids_final.csv written to file")
   }
 }
