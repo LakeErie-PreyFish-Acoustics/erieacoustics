@@ -95,10 +95,10 @@ base::print(p1)
 file <- "1_Annual_Protocol/sample_grids_final.png"
 
 if(file.exists(file)) {
-  ggplot2::ggsave(file, plot = p1)
+  ggplot2::ggsave(file, plot = p1, width = 6.5, height = 4.25)
   base::print("previous sample_grids_final.png was overwritten")
 } else {
-  ggplot2::ggsave(file, plot = p1)
+  ggplot2::ggsave(file, plot = p1, width = 6.5, height = 4.25)
   base::print("sample_grids_final.png was written to file")
 }
 
