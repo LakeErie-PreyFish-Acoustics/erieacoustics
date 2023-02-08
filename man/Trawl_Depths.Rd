@@ -7,7 +7,7 @@
 dataframe
 }
 \description{
-This table contains target trawl depths based on site depth.
+This table contains the target trawl depths for each site by strata.
 }
 \examples{
 data("Trawl_Depths")

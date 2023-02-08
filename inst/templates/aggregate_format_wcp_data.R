@@ -41,12 +41,13 @@ GRID <- NULL
 for(i in 1:length(epi)) GRID[i] <- (substring(epi[i], 20, 23))
 
 ## Import EpiLayerLine_Final data and append GRID numbers
-epi <- (lapply(epi, read_csv))
+read_csv_col_format <- function(x) read_csv(x, col_types = cols(.default = col_double(), Ping_date = col_date(), Ping_milliseconds = col_double(), Ping_time = col_time(), GPS_UTC_time = col_time()))
+epi <- (lapply(epi, read_csv_col_format))
 for(i in 1:length(GRID)) epi[[i]]$GRID <- GRID[i]
 epi <- bind_rows(epi)
 
 ## Import BottomLine_Final data and append GRID numbers
-bot<-(lapply(bot, read_csv))
+bot<-(lapply(bot, read_csv_col_format))
 for(i in 1:length(GRID)) bot[[i]]$GRID <- GRID[i]
 bot <- bind_rows(bot)
 
