@@ -22,6 +22,7 @@
 # Edit these variables ----
 sonartype <- 'SIMRAD' # 'SIMRAD' or 'BIOSONIC'
 templatefile <- '2_EVTemplate/ErieHacTemplate_2021_v2_simrad.EV' # path to template
+calfile <- file.path(getwd(), '2_EVTemplate/calibrationfile.ecs')
 
 # Start the import process ----
 # the following code assumes you want to run all transects together as a batch
@@ -36,7 +37,7 @@ transects <- dir('3_Ping_Data')
 
 # run all ----
 # WARNING - this could take a while
-run_all <- function(x) {set_up_transect(evtemplate, getwd(), sonartype, x)}
+run_all <- function(x) {set_up_transect(evtemplate, calfile, getwd(), sonartype, x)}
 lapply(transects, run_all)
 
 # end of R process
