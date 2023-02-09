@@ -7,8 +7,7 @@
 dataframe
 }
 \description{
-This table contains a vessel log for using during data collection.
-
+This table contains a vessel log for documentation during data collection.
 }
 \examples{
 data("Vessel_Log")

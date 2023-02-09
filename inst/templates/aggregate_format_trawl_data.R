@@ -28,6 +28,7 @@
 ## suggested packages
 library(readr)
 library(dplyr)
+library(tidyr)
 library(reshape2)
 library(base)
 library(magrittr)

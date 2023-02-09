@@ -15,9 +15,6 @@
 # 2. Evaluate locations with vessel crew and partner agencies.
 # 3. Update 'sample_grids_final.csv' document as needed.
 # 4. Run 'sample_grids_final()
-# a single transect export can be done like:
-# export_transect_evdata(getwd(), "S1_R1", 500)
-# the `getwd()` call is required as Echoview doesn't recogize relative paths from R
 
 # ----
 ## load packages
