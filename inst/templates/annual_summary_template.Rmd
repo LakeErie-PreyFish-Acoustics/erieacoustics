@@ -75,7 +75,7 @@ year <- 2022
 ```{r sample-map}
 
 if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5)){
-  
+
   hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
     dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
   
@@ -110,7 +110,7 @@ if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5
   base::print(p1)
   
 } else if(base::file.exists(file1) & base::file.exists(file3)){
-  
+
   hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
     dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
   
@@ -142,7 +142,36 @@ if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5
   base::print(p1)
   base::print(paste(file5,"does not exist."))
   
-} else {base::print(paste(file1,"and/or",file3,"and/or",file5,"do not exist.")) }
+} else if(base::file.exists(file1) ){
+  
+    hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
+    dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
+  
+
+  ## create samples and location map
+  p1 <- eriespatial::base_erieshore +
+    ggplot2::scale_x_continuous(limits = c(bound_box["xmin"], bound_box["xmax"]))+
+    ggplot2::scale_y_continuous(limits = c(bound_box["ymin"], bound_box["ymax"]))+
+    ggplot2::geom_sf(data = shape_5mingrid_surv_sub, col="lightgray", fill=NA, lwd = 0.5, alpha = 0.5) +
+    ggplot2::geom_sf(data = basin_shape, aes(fill=STRATUM, alpha=0.5)) +
+    ggplot2::scale_fill_viridis_d(alpha = 0.5) +
+    ggplot2::guides(alpha="none") +
+    ggplot2::geom_sf(data = hacdat_sum, size = 2, alpha = 1, aes(color='Hydroacoustic', shape='Hydroacoustic')) +
+    ggplot2::ylab("Latitude (dd)") +
+    ggplot2::xlab("Longitude (dd)") +
+    ggplot2::ggtitle("Sample types and locations") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = c("right")) +
+    scale_color_manual(name='Sample types',
+                       breaks=c('Hydroacoustic'),
+                       values=c('Hydroacoustic'='black')) +
+    scale_shape_manual(name = 'Sample types', 
+                       breaks=c('Hydroacoustic'),
+                       values=c('Hydroacoustic'= 1))
+  
+  ## print figure
+  base::print(p1)
+  } else {base::print(paste("Neither",file1,",",file3,", or",file5,"exist.")) }
 
 
 ```

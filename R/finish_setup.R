@@ -91,7 +91,7 @@ finish_setup <- function() {
   if (!file.exists("Water_Column_Profiles.csv has been created")) {
     WC <- c(
       "month", "day", "year", "time", "GRID", "depth_m",
-      "do_mgl", "temp_c", "lattitude", "longitude"
+      "do_mgl", "temp_c", "latitude", "longitude"
     )
 
     write.table(t(WC),
