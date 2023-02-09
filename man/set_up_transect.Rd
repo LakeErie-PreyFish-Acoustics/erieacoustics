@@ -4,10 +4,12 @@
 \alias{set_up_transect}
 \title{Automate the setup of a template}
 \usage{
-set_up_transect(template, projecthome, sonartype, transectname)
+set_up_transect(template, ecsfile, projecthome, sonartype, transectname)
 }
 \arguments{
 \item{template}{A file path to an Echoview template}
+
+\item{ecsfile}{A file patch to the ecs calibration file}
 
 \item{projecthome}{A file path to the project directory. Generally, when working in an
 RStudio project environment you can populate this field using `getwd()`}
@@ -28,8 +30,10 @@ in an expected file path.
 \dontrun{
 library(erieacoustics)
 evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
+calfile <- file.path(getwd(), '2_EVTemplate/calibrationfile.ecs')
 dir.exists("3_Ping_Data")
 file.exists(evtemplate)
+file.exists(calfile)
 
 set_up_transect(evtemplate, projecthome = getwd(),
                sonartype = "SIMRAD", transectname = "ERIE")
