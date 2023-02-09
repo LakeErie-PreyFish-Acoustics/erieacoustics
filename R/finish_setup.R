@@ -47,7 +47,7 @@ finish_setup <- function() {
 
   usethis::use_template(
     template = "sample_grids_select.R",
-    save_as = "1_Annual_Protocol/1_Select_Sample_Grids.R",
+    save_as = "1_Annual_Protocol/1_select_sample_grids.R",
     package = "erieacoustics"
   )
 
@@ -91,7 +91,7 @@ finish_setup <- function() {
   if (!file.exists("Water_Column_Profiles.csv has been created")) {
     WC <- c(
       "month", "day", "year", "time", "GRID", "depth_m",
-      "do_mgl", "temp_c", "lattitude", "longitude"
+      "do_mgl", "temp_c", "latitude", "longitude"
     )
 
     write.table(t(WC),

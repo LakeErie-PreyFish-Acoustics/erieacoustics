@@ -13,6 +13,24 @@ header-includes:
  \floatplacement{table}{H}
 ---
 
+<!-- 
+Meta data ----
+A template analysis file from erieacoustics
+Version 0.0.1
+November 15, 2022
+M. DuFour
+
+What it does ----
+This Rmarkdown template generates an annual summary document to visualize survey data requiring five files: 'hacdat.csv', 'histo.csv', 'wcpdat.csv', 'trwllen.csv', and 'trwldat.csv'.
+
+How to use ----
+This template populates with values from 'hacdat.csv', 'histo.csv', 'wcpdat.csv', 'trwllen.csv', and 'trwldat.csv'., and as well values defined in the 'load-packages' code block.
+1. Finalize 'hacdat.csv', 'histo.csv', 'wcpdat.csv', 'trwllen.csv', and 'trwldat.csv'.
+2. Set 'basin', and 'year' in 'load-packages' code block
+3. Updated remainder of **text** as needed.
+4. Knit to HTML, PDF, or WORD.
+5. Review 'Annual_Summary.html/pdf/docx' for accuracy.
+-->
 
 ```{r setup, include=FALSE}
 
@@ -75,7 +93,7 @@ year <- 2022
 ```{r sample-map}
 
 if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5)){
-  
+
   hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
     dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
   
@@ -110,7 +128,7 @@ if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5
   base::print(p1)
   
 } else if(base::file.exists(file1) & base::file.exists(file3)){
-  
+
   hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
     dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
   
@@ -142,7 +160,36 @@ if(base::file.exists(file1) & base::file.exists(file3) & base::file.exists(file5
   base::print(p1)
   base::print(paste(file5,"does not exist."))
   
-} else {base::print(paste(file1,"and/or",file3,"and/or",file5,"do not exist.")) }
+} else if(base::file.exists(file1) ){
+  
+    hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
+    dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
+  
+
+  ## create samples and location map
+  p1 <- eriespatial::base_erieshore +
+    ggplot2::scale_x_continuous(limits = c(bound_box["xmin"], bound_box["xmax"]))+
+    ggplot2::scale_y_continuous(limits = c(bound_box["ymin"], bound_box["ymax"]))+
+    ggplot2::geom_sf(data = shape_5mingrid_surv_sub, col="lightgray", fill=NA, lwd = 0.5, alpha = 0.5) +
+    ggplot2::geom_sf(data = basin_shape, aes(fill=STRATUM, alpha=0.5)) +
+    ggplot2::scale_fill_viridis_d(alpha = 0.5) +
+    ggplot2::guides(alpha="none") +
+    ggplot2::geom_sf(data = hacdat_sum, size = 2, alpha = 1, aes(color='Hydroacoustic', shape='Hydroacoustic')) +
+    ggplot2::ylab("Latitude (dd)") +
+    ggplot2::xlab("Longitude (dd)") +
+    ggplot2::ggtitle("Sample types and locations") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = c("right")) +
+    scale_color_manual(name='Sample types',
+                       breaks=c('Hydroacoustic'),
+                       values=c('Hydroacoustic'='black')) +
+    scale_shape_manual(name = 'Sample types', 
+                       breaks=c('Hydroacoustic'),
+                       values=c('Hydroacoustic'= 1))
+  
+  ## print figure
+  base::print(p1)
+  } else {base::print(paste("Neither",file1,",",file3,", or",file5,"exist.")) }
 
 
 ```
@@ -180,8 +227,24 @@ if(basin == "WB"){
 } else {base::print("Check basin name")}
 
 
-## create density map for epi and hypo
+## create density map for full water column
 p1 <- eriespatial::base_erieshore +
+  ggplot2::scale_x_continuous(limits = c(bound_box["xmin"], bound_box["xmax"]))+
+  ggplot2::scale_y_continuous(limits = c(bound_box["ymin"], bound_box["ymax"]))+
+  ggplot2::geom_sf(data = shape_5mingrid_surv_sub, col="lightgray", fill=NA, lwd = 0.5, alpha = 0.5) +
+  ggplot2::geom_sf(data = basin_shape, aes(fill=STRATUM, alpha=0.5)) +
+  ggplot2::scale_fill_viridis_d(alpha = 0.5) +
+  ggplot2::guides(alpha="none") +
+  ggplot2::geom_sf(data = hacdat_sum, aes(size = NperHa), col = "black", alpha = 0.35,  pch = 1) +
+  ggplot2::ylab("Latitude (dd)") +
+  ggplot2::xlab("Longitude (dd)") +
+  ggplot2::ggtitle("Total fish density (NperHa)") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(legend.position = c("right"))
+
+
+## create density map for EPI and HYP
+p2 <- eriespatial::base_erieshore +
   ggplot2::scale_x_continuous(limits = c(bound_box["xmin"], bound_box["xmax"]))+
   ggplot2::scale_y_continuous(limits = c(bound_box["ymin"], bound_box["ymax"]))+
   ggplot2::geom_sf(data = shape_5mingrid_surv_sub, col="lightgray", fill=NA, lwd = 0.5, alpha = 0.5) +
@@ -195,23 +258,6 @@ p1 <- eriespatial::base_erieshore +
   ggplot2::theme_bw() +
   ggplot2::theme(legend.position = c("bottom")) +
   ggplot2::facet_wrap(vars(LAYER))
-
-
-
-## create density map for full water column
-p2 <- eriespatial::base_erieshore +
-  ggplot2::scale_x_continuous(limits = c(bound_box["xmin"], bound_box["xmax"]))+
-  ggplot2::scale_y_continuous(limits = c(bound_box["ymin"], bound_box["ymax"]))+
-  ggplot2::geom_sf(data = shape_5mingrid_surv_sub, col="lightgray", fill=NA, lwd = 0.5, alpha = 0.5) +
-  ggplot2::geom_sf(data = basin_shape, aes(fill=STRATUM, alpha=0.5)) +
-  ggplot2::scale_fill_viridis_d(alpha = 0.5) +
-  ggplot2::guides(alpha="none") +
-  ggplot2::geom_sf(data = hacdat_sum, aes(size = NperHa), col = "black", alpha = 0.35,  pch = 1) +
-  ggplot2::ylab("Latitude (dd)") +
-  ggplot2::xlab("Longitude (dd)") +
-  ggplot2::ggtitle("Total fish density (NperHa)") +
-  ggplot2::theme_bw() +
-  ggplot2::theme(legend.position = c("right"))
 
 ## print figures
 base::print(p1)
@@ -238,17 +284,8 @@ p1 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
        ggplot2::ggtitle("TS frequency by layer") +
        ggplot2::theme_bw()
 
-## TS plots by GRID
-p2 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
-       ggplot2::geom_bar(stat = 'identity') +
-       ggplot2::facet_wrap(GRID~., nrow = base::round(base::sqrt(base::length(base::unique(histo$GRID))),0)) +
-       ggplot2::xlab("Target strength bins (1-dB)") +
-       ggplot2::ylab("Single target counts") +
-       ggplot2::ggtitle("TS frequency by grid") +
-       ggplot2::theme_bw()
-
 ## TS plots by STRATUM
-p3 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
+p2 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
        ggplot2::geom_bar(stat = 'identity') +
        ggplot2::facet_wrap(STRATUM~., nrow = base::round(base::sqrt(base::length(base::unique(histo$STRATUM))),0)) +
        ggplot2::xlab("Target strength bins (1-dB)") +
@@ -257,12 +294,21 @@ p3 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
        ggplot2::theme_bw()
 
 ## TS plots by STRATUM by LAYER
-p4 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
+p3 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
        ggplot2::geom_bar(stat = 'identity') +
        ggplot2::facet_wrap(LAYER+STRATUM~., nrow = base::round(base::sqrt(base::length(base::unique(histo$LAYER))*base::length(base::unique(histo$STRATUM))),0)) +
        ggplot2::xlab("Target strength bins (1-dB)") +
        ggplot2::ylab("Single target counts") +
        ggplot2::ggtitle("TS frequency by stratum and layer") +
+       ggplot2::theme_bw()
+
+## TS plots by GRID
+p4 <- ggplot2::ggplot(histo, aes(TS_bin, Bin_count, width=1)) +
+       ggplot2::geom_bar(stat = 'identity') +
+       ggplot2::facet_wrap(GRID~., nrow = base::round(base::sqrt(base::length(base::unique(histo$GRID))),0)) +
+       ggplot2::xlab("Target strength bins (1-dB)") +
+       ggplot2::ylab("Single target counts") +
+       ggplot2::ggtitle("TS frequency by grid") +
        ggplot2::theme_bw()
 
 ## print figures
@@ -388,7 +434,7 @@ p4 <- ggplot2::ggplot(trwllen, aes(TLEN)) +
       ggplot2::ggtitle("Trawl length frequency by stratum and layer") +
       ggplot2::theme_bw()
 
-## TL plots by TRANSECT
+## TL plots by GRID
 p5 <- ggplot2::ggplot(trwllen, aes(TLEN)) +
       ggplot2::geom_histogram(binwidth = 5) +
       ggplot2::facet_wrap(GRID~., nrow = base::round(base::sqrt(base::length(base::unique(trwllen$GRID))),0)) +
@@ -466,7 +512,7 @@ p3 <- ggplot2::ggplot(trwldat_sum, aes(x = props, y = SpcGrp)) +
 
 
 
-# Catch proportions by SpcGrp and stratum
+# Catch proportions by SpcGrp and STRATUM
 trwldat_sum <- trwldat[trwldat$SpcGrp != "TOTAL",] %>%
                 dplyr::group_by(STRATUM, SpcGrp) %>%
                 dplyr::summarize(catch = sum(catch))
@@ -488,7 +534,7 @@ p4 <- ggplot2::ggplot(trwldat_sum, aes(x = props, y = SpcGrp)) +
       ggplot2::ylab("Species group") +
       ggplot2::theme_bw()
 
-# Catch proportions by SpcGrp and stratum
+# Catch proportions by SpcGrp and STRATUM and LAYER
 trwldat_sum <- trwldat[trwldat$SpcGrp != "TOTAL",] %>%
                 dplyr::group_by(STRATUM, LAYER, SpcGrp) %>%
                 dplyr::summarize(catch = sum(catch))

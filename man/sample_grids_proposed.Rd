@@ -21,6 +21,6 @@ based on effort allocation table.
 }
 \examples{
 \dontrun{
-sample_grids_proposed("WB",2022)
- }
+sample_grids_proposed("WB", 2022)
+}
 }
