@@ -64,7 +64,10 @@ bot_line <- bot %>% group_by(GRID) %>%
   summarise(bot_avg = mean(Depth), bot_min = min(Depth), bot_max = max(Depth))
 
 ## join EpiLayerLine and BottomLine summaries together
-epi_bot_lines <- left_join(epi_line, bot_line, by = "GRID")
+epi_bot_lines <- right_join(epi_line, bot_line, by = "GRID")
+epi_bot_lines$epi_avg <- ifelse(epi_bot_lines$epi_avg > epi_bot_lines$bot_avg, NA, epi_bot_lines$epi_avg)
+epi_bot_lines$epi_min <- ifelse(epi_bot_lines$epi_min > epi_bot_lines$bot_min, NA, epi_bot_lines$epi_min)
+epi_bot_lines$epi_max <- ifelse(epi_bot_lines$epi_max > epi_bot_lines$bot_max, NA, epi_bot_lines$epi_max)
 
 ## write to file
 write_csv(epi_bot_lines, "5_Enviro_Data/EpiBotLineSummaries.csv")

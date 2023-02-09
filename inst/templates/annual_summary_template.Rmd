@@ -205,27 +205,6 @@ hacdat <- readr::read_csv(file1) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"),
 hacdat_sum <- readr::read_csv(file1) %>% dplyr::group_by(BASIN, STRATUM, GRID, Interval, Date_M, Time_M, Lat_M, Lon_M, BottomLine) %>%
                          dplyr::summarize(NperHa = sum(NperHa)) %>%  sf::st_as_sf(coords = c("Lon_M", "Lat_M"), crs = 4326)
 
-basin <- "CB"
-year <- 2022
-
-## subset survey grid shape file
-shape_5mingrid_surv_sub <- eriespatial::shape_5mingrid_surv %>% dplyr::filter(BASIN == basin)
-
-## basin specific shape and bounding box
-if(basin == "WB"){
-  bound_box <- c(xmin = -83.550, ymin = 41.3494, xmax = -82.450, ymax = 42.1053)
-  bounds <- bound_box %>% sf::st_bbox() %>% sf::st_as_sfc() %>% sf::st_set_crs(4326)
-  basin_shape <- eriespatial::shape_wbstrata
-} else if(basin == "CB"){
-  bound_box <- c(xmin = -82.4, ymin = 41.363, xmax = -80.4, ymax = 42.7205)
-  bounds <- bound_box %>% sf::st_bbox() %>% sf::st_as_sfc() %>% sf::st_set_crs(4326)
-  basin_shape <- eriespatial::shape_cbstrata
-} else if(basin == "EB"){
-  bound_box <- c(xmin = -80.5, ymin = 42.1, xmax = -78.85, ymax = 42.9)
-  bounds <- bound_box %>% sf::st_bbox() %>% sf::st_as_sfc() %>% sf::st_set_crs(4326)
-  basin_shape <- eriespatial::shape_ebstrata
-} else {base::print("Check basin name")}
-
 
 ## create density map for full water column
 p1 <- eriespatial::base_erieshore +
