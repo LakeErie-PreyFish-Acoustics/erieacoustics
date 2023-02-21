@@ -312,10 +312,10 @@ if(file.exists(file3)){
     ylim(c(max(wcpdat$depth_m), 0)) +
     geom_point(color="red", alpha=0.5) +
     facet_wrap(~GRID) +
-    geom_hline(yintercept=epi_avg, color="light blue", linetype= 2) +
-    geom_hline(yintercept=bot_avg, color="light blue", linetype = 1) +
+    geom_hline(aes(yintercept=epi_avg), color="dark blue", linetype= 2) +
+    geom_hline(aes(yintercept=bot_avg), color="dark blue", linetype = 1) +
     ylab("Depth (m)") +
-    xlab("Temperature (C)") +
+    xlab(expression(Temperature~""*degree*C)) +
     ggtitle("Water temperature profiles by grid") +
     theme_bw() +
     labs(caption = "Solid blue bline indicates bottom\nDashed blue line indicates epi line")
@@ -326,10 +326,10 @@ if(file.exists(file3)){
     ylim(c(max(wcpdat$depth_m), 0)) +
     geom_point(color='red', alpha=0.5) +
     facet_wrap(~GRID) +
-    geom_hline(yintercept=epi_avg, color="light blue", linetype= 2) +
-    geom_hline(yintercept=bot_avg, color="light blue", linetype = 1) +
+    geom_hline(aes(yintercept=epi_avg), color="dark blue", linetype= 2) +
+    geom_hline(aes(yintercept=bot_avg), color="dark blue", linetype = 1) +
     ylab("Depth (m)") +
-    xlab("Temperature (C)") +
+    xlab(expression(Temperature~""*degree*C)) +
     ggtitle("Water temperature profiles by grid") +
     theme_bw() +
     labs(caption = "Solid blue bline indicates bottom\nDashed blue line indicates epi line")
