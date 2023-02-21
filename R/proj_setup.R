@@ -20,46 +20,53 @@ proj_setup <- function(path, ...) {
     "## Folder Description and Contents",
     "File | Description",
     "---------- | --------------------------------------------------",
-    "1_Annual_Protocol | contains Rmarkdown scripts and products for annual survey protocol",
-    "2_EVTemplate | Echoview processing template should be stored here to be available to `set_up_transect`",
-    "3_Ping_Data | contains the acoustic data for each transect",
-    "3_Ping_Data/transectname | each transect should be uniquely named and all data stored within a single directory",
-    "4_Trawl_Data | contains the paired trawl data",
-    "5_Enviro_Data | contains environmental measurements",
-    "6_Misc | contains miscellaneous files associated with survey",
-    "7_Annual_Summary | contains Rmarkdown scripts and products for annual summary"
+    "**1_Annual_Protocol** | data processing and Rmarkdown scripts and products for annual survey protocol",
+    "**2_EVTemplate** | Echoview processing template should be stored here to be available to `set_up_transect.R`",
+    "**3_Ping_Data** | uniquely named transect folders (basin_stratum_grid)",
+    "**3_Ping_Data/xB_Sxx_Gxxx** | transect specific hydroacoustic data stored within a single directory",
+    "**4_Trawl_Data** | contains the paired trawl data",
+    "**5_Enviro_Data** | contains water column profiles and other environmental measurements",
+    "**6_Misc** | contains miscellaneous files associated with survey",
+    "**7_Annual_Summary** | contains data processing and Rmarkdown scripts and products for annual summary"
   )
 
   instructions <- c(
     "# Erie Acoustic Project Template Intructions  ",
-    "This file is best viewed by using the *PREVIEW* feature in RStudio  ",
-    "### *This file can be deleted following project set up.*  ",
+    "This file is best viewed by using the *Preview* feature in RStudio.  ",
     " ",
-    "# IMPORTANT",
-    "Run `erieacoustics::finish_setup()` to complete the project set up. ",
-    "  ",
     "## What's included  ",
-    "1. README.md template  ",
-    "2. Instructions.md  ",
-    "3. A gitignore file has been included. If you have git installed you will still need to run `git init` to initialize the repo.  ",
-    "4. Template folder directory has been created. This directory structure is required for certain funtions to run as intended.  ",
-    "5. Example analysis scripts have been included to assist in utilizing built in functions.  ",
+    "1. ReadMe.md template  ",
+    "2. Instructions.md template  ",
+    "3. A gitignore file. If you have git installed you will still need to run `git init` to initialize the repo.  ",
+    "4. Template folder directory - directory structure is required for package functions to run as intended.  ",
+    "5. Example analysis scripts to aid function use and data processing.  ",
     "  ",
     "## Instructions  ",
-    "1. Complete the project set up by running `erieacoustics::finish_setup()`  ",
-    "2. Please review and update the README.md file. View: [ReadMe](ReadMe.html).  ",
-    "3. In RStudio, running 'Preview' will knit the md file to create an html README file.  ",
-    "4. Each transect's data should be in individual folders within 3_Ping_Data.  ",
-    "5. The analysis template should be copied to 2_EVTemplate  ",
-    "  ",
+    "1. Run `erieacoustics::finish_setup()` to complete the project set up.  ",
+    "2. In folder **1_Annual_Protocol**, use `1_select_sample_grids.R` and `2_Project_Proposal_Summary.Rmd` to generate *2_Project_Proposal_Summary.html*.  ",
+    "3. Field calibrate hydroacoustic system. ([instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
+    "4. Collect survey data following *2_Project_Proposal_Summary.html*.   ",
+    "5. Transfer hydroacoustic, trawl, and environmental data to folders.  ",
+    "    * **3_Ping_Data** - house raw transects data in transect specific folders (e.g., CB_S07_G621).  ",
+    "    * **4_Trawl_Data** - format trawl data and transfer to *Trawl_Catch.csv*, *Trawl_Effort.csv*, and *Trawl_length.csv* files.  ",
+    "    * **5_Enviro_Data** - format profile data and transfer to *Water_Column_Profiles.csv*.  ",
+    "    * **6_Misc** - all the stuff we forgot about... put it here.  ",
+    "6. Follow [Data Processing Step] below.  ",
+    "Reveiw and update the `ReadMe.md` file as needed. View: [ReadMe](ReadMe.html).  ",
+    " ",
     "## Processing Steps  ",
-    "1. Analyze the calibration data ([instructions](6_Misc/Calibration_Instructions_Notes.html)) first as the *.ecs file is required in the current template.  ",
-    "2. Open the EV template and edit the template to include the new calibration file. Save as a new template in 2_EVTemplate.  ",
-    "3. Open and edit `1_run_setup_template.R`. This script applies the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file.  ",
-    "4. Run `1_run_setup_template.R`. *WARNING*: this process could take a long time!   ",
-    "5. Inspect and edit each transect EV file. See *link to detailed instructions*  ",
-    "6. When data inspection and editing is complete, run `2_Export_EVdata.r` to export each transect. *WARNING*: this could take a long time.  ",
-    "7. Open `3_Biomass_Analysis.r` and edit as required to complete the data analysis.  "
+    "1. Analyze the calibration data and generate calibration report ([instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
+    "2. Create *.ecs file and update transducer characteristic based on calibration report.   ",
+    "3. In **2_EVTemplate**, Open the EV template and edit the template to include the new calibration file and update variables in *Formula_Nv* object. Save as *ErieHacTemplate_20xx_xB.Ev*.    ",
+    "4. In **7_Annual_Summary**, open and edit `1_import_data_to_template.R`. This script applies the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file. Run `1_import_data_to_template.R`. *WARNING*: this process could take a long time!    ",
+    "5. In **Ping_Data** sub-folders, scrutinize, clean, and edit each transects EV file. See link to detailed instructions: *coming soon in version 2*.   ",
+    "6. In **7_Annual_Summary**, when data inspection and editing is complete, run `2_export_data_from_EV_EV.R` to export each transect. *WARNING*: this could take a long time!   ",
+    "7. In **7_Annual_Summary**, open `3_aggregate_format_hydro_data.R` and run script to produce *hacdat.csv*, *histo.csv*, and *histohac.csv*.   ",
+    "8. In **7_Annual_Summary**, open `4_aggregate_format_wcp_data.R` and run script to produce *EpiBotLineSummaries.csv* and *wcpdat.csv*.  ",
+    "9. In **7_Annual_Summary**, open `5_aggregate_format_trawl_data.R` and run script to produce *trwldat.csv* and *trwllen.csv*.  ",
+    "10. In **7_Annual_Summary**, open `6_Annual_Summary.R` and run script to produce *6_Annual_Summary.html*. Scrutinize report and make an necessary changes in the data processing flow. Reproduce *6_Annual_Summary.html* as needed.  ",
+    "11. Move forward with survey presentation and reporting.  ",
+    ""
   )
 
 
@@ -81,13 +88,26 @@ proj_setup <- function(path, ...) {
   )
 
   abstract <-  c(
-    "# Abstract",
+    "# Post Survey Notes",
     " ",
-    "Please provide a simple description of the project"
+    "Describe notable deviations from *2_Annual_Survey_Protocol.html*"
   )
 
+  filetable2 <- c(
+    "## Folder Description and Contents",
+    "File | Data processing notes",
+    "---------- | --------------------------------------------------",
+    "**1_Annual_Protocol** | Annual protocol completion data",
+    "**2_EVTemplate** | Notable updates to Echoview template",
+    "**3_Ping_Data** | Data of file transfer - total number of transects",
+    "**3_Ping_Data/xB_Sxx_Gxxx** | Transect specific notes",
+    "**4_Trawl_Data** | Data acquisition date - agency point of contacts",
+    "**5_Enviro_Data** | File transfer date - agency point of contact",
+    "**6_Misc** | Associated file descriptions",
+    "**7_Annual_Summary** | Completion date"
+  )
   # write to index file
-  readme <- c(contents, " ", abstract, " ", filetable)
+  readme <- c(contents, " ", abstract, " ", filetable2)
   writeLines(readme, con = file.path(path, "ReadMe.md"))
 
   # write gitignore file

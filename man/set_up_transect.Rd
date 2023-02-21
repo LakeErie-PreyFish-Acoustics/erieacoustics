@@ -4,21 +4,21 @@
 \alias{set_up_transect}
 \title{Automate the setup of a template}
 \usage{
-set_up_transect(template, projecthome, sonartype, tranname)
+set_up_transect(template, ecsfile, projecthome, sonartype, transectname)
 }
 \arguments{
 \item{template}{A file path to an Echoview template}
 
-\item{projecthome}{Project directory normally obtained using `getwd()`}
+\item{ecsfile}{A file patch to the ecs calibration file}
+
+\item{projecthome}{A file path to the project directory. Generally, when working in an
+RStudio project environment you can populate this field using `getwd()`}
 
 \item{sonartype}{The function uses a text pattern matching to find acoustic data files.
-Function expects an input of *BIOSONIC* or *SIMRAD* to detect \*.dt4 or \*.raw
+Function expects an input of *BIOSONICS* or *SIMRAD* to detect \*.dt4 or \*.raw
 file types.}
 
 \item{transectname}{Transect name that matches a valid directory in *3_Ping_Data/* directory}
-}
-\value{
-
 }
 \description{
 This function calls RDCOMClient to establish a COM application for Echoview.
@@ -30,13 +30,15 @@ in an expected file path.
 \dontrun{
 library(erieacoustics)
 evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
+calfile <- file.path(getwd(), '2_EVTemplate/calibrationfile.ecs')
 dir.exists("3_Ping_Data")
 file.exists(evtemplate)
+file.exists(calfile)
 
 set_up_transect(evtemplate, projecthome = getwd(),
-               sonartype = "SIMRAD", tranname = "ERIE")
+               sonartype = "SIMRAD", transectname = "ERIE")
 set_up_transect(evtemplate, projecthome = getwd(),
-             sonartype = "BIOSONIC", tranname = "COB")
+             sonartype = "BIOSONICS", transectname = "COB")
 }
 
 }
