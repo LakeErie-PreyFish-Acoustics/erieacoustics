@@ -43,5 +43,12 @@ import_epi_bottom_lines <- function(transect) {
   bot <- dplyr::summarize(bot, bot_avg = mean(Depth), bot_min = min(Depth), bot_max = max(Depth))
 
   epi_bot_lines <- dplyr::left_join(bot, epi, by = "GRID")
+
+  # if epi line is greater than bottom the value is arbitrary
+  # no thermocline present, values should be NA
+  epi_bot_lines$epi_avg <- ifelse(epi_bot_lines$epi_avg > epi_bot_lines$bot_avg, NA, epi_bot_lines$epi_avg)
+  epi_bot_lines$epi_min <- ifelse(epi_bot_lines$epi_min > epi_bot_lines$bot_min, NA, epi_bot_lines$epi_min)
+  epi_bot_lines$epi_max <- ifelse(epi_bot_lines$epi_max > epi_bot_lines$bot_max, NA, epi_bot_lines$epi_max)
+
   epi_bot_lines
 }
