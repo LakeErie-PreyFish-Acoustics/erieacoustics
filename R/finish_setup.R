@@ -63,8 +63,15 @@ finish_setup <- function() {
     package = "erieacoustics"
   )
 
+  usethis::use_template(
+    template = "echogram_processing.Rmd",
+    save_as = "6_Misc/Echogram_Processing_Instructions.Rmd",
+    package = "erieacoustics"
+  )
+
   rmarkdown::render("6_Misc/Calibration_Instructions_Notes.Rmd")
   rmarkdown::render("ReadMe.md")
+  rmarkdown::render("6_Misc/Echogram_Processing_Instructions.Rmd")
 
   usethis::ui_done("ReadMe file rendered to html")
   usethis::ui_done("`1_import_data_to_template.R` file created in `7_Annual_Summary`")
