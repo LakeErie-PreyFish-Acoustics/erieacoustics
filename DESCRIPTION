@@ -38,6 +38,11 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 Enhances: 
+    eriespatial,
     ggplot2,
+    Hmisc,
+    kableExtra,
+    lubridate,
     readr,
-    sf
+    sf,
+    suncalc
