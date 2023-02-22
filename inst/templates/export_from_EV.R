@@ -15,8 +15,8 @@
 # 2. Ensure that data has been inspected and region definitions have been drawn in EV
 # 3. Ensure that your EV dongle is in and you have a license for scripting
 # a single transect export can be done like:
-# export_transect_evdata(getwd(), "S1_R1", 500)
-# the `getwd()` call is required as Echoview doesn't recogize relative paths from R
+# export_transect_evdata(getwd(), "EB_S15_G760", 500)
+# the `getwd()` call is required as Echoview doesn't recognize relative paths from R
 
 # ----
 library(erieacoustics)
