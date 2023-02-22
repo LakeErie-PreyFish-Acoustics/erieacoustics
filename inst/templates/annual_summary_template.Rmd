@@ -85,6 +85,20 @@ year <- 2022
   } else {print("Check basin name")}
 ```
 
+## Sample effort
+```{r sample-table}
+data("Effort_Allocation")
+allocation_targets <- Effort_Allocation %>% select(BASIN, STRATUM, n_trans_eq) %>%
+  filter(BASIN == basin) %>% rename(Target = n_trans_eq)
+hacdat_sum <- read_csv(file1) %>% 
+  group_by(BASIN, STRATUM, GRID) %>% 
+  summarize(N = n()) %>% 
+  summarise(Surveyed = n())
+
+kable(left_join(allocation_targets, hacdat_sum))
+
+```
+
 ## Sample maps
 *Describe sampling efforts...*    
 
