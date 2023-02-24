@@ -3,6 +3,7 @@
 #' Automate the setup of a template
 #'
 #' @param template A file path to an Echoview template
+#' @param ecsfile A file patch to the ecs calibration file
 #' @param projecthome A file path to the project directory. Generally, when working in an
 #' RStudio project environment you can populate this field using `getwd()`
 #' @param sonartype The function uses a text pattern matching to find acoustic data files.
@@ -18,7 +19,7 @@
 #' @importFrom RDCOMClient COMCreate
 #' @importFrom RDCOMClient createCOMReference
 #' @import RDCOMClient
-#' @return
+#' @return NULL
 #' @export
 #'
 #'
@@ -26,8 +27,10 @@
 #' \dontrun{
 #'library(erieacoustics)
 #'evtemplate <- file.path(getwd(), '2_EVTemplate/EVTemplate.EV')
+#'calfile <- file.path(getwd(), '2_EVTemplate/calibrationfile.ecs')
 #'dir.exists("3_Ping_Data")
 #'file.exists(evtemplate)
+#'file.exists(calfile)
 #'
 #'set_up_transect(evtemplate, projecthome = getwd(),
 #'                sonartype = "SIMRAD", transectname = "ERIE")
@@ -36,7 +39,7 @@
 #'}
 #'
 
-set_up_transect<-function (template, projecthome, sonartype, transectname) {
+set_up_transect<-function (template, ecsfile, projecthome, sonartype, transectname) {
   if(!file.exists(template)) {
     usethis::ui_oops("It appears as though your template doesn't exist")
   }
@@ -60,6 +63,7 @@ set_up_transect<-function (template, projecthome, sonartype, transectname) {
   EvApp <-  RDCOMClient::COMCreate('EchoviewCom.EvApplication')
   # New file using template
   EvFile <- EvApp$NewFile(template)
+  EvFile[["Filesets"]][[0]]$SetCalibrationFile(ecsfile)
 
   # get then load dt4 files
   dt4_dir<-file.path(projecthome, "3_Ping_Data", transectname)

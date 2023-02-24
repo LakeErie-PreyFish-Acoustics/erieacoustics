@@ -1,0 +1,164 @@
+---
+title: "Lake Erie Pelagic Forage Fish Survey: **add basin and year**"
+author: "**add PI name**"
+date: '**add Date**'
+output:
+  pdf_document: default
+  html_document:
+    toc: yes
+    toc_float: yes
+header-includes: 
+ \usepackage{float}
+ \floatplacement{figure}{H}
+ \floatplacement{table}{H}
+---
+
+<!-- 
+Meta data ----
+A template analysis file from erieacoustics
+Version 0.0.1
+November 15, 2022
+M. DuFour
+
+What it does ----
+This Rmarkdown template generates an annual project proposal document to guide data collection requiring two files: 'sample_grids_final.png' and 'sample_grids_final.csv'
+
+How to use ----
+This template populates with values from 'sample_grids_final.png' and 'sample_grids_final.csv', and as well values defined in the 'load-packages' code block.
+1. Finalize 'sample_grids_final.png' and 'sample_grids_final.csv'
+2. Set 'basin', 'year', and survey 'start_date' and 'end_date' in section 'load-packages' code block
+3. Updated remainder of text as needed.
+4. Knit to HTML, PDF, or WORD.
+5. Review 'Project_Proposal_Summary.html/pdf/docx' for accuracy.
+-->
+
+```{r load-packages, include =FALSE}
+library(dplyr)
+library(suncalc)
+library(lubridate)
+library(knitr)
+library(kableExtra)
+library(Hmisc)
+library(erieacoustics)
+library(eriespatial)
+library(readr)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+
+## set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
+basin = "EB" 
+year = 2022
+
+## set survey start and end dates
+start_date <- "2022-07-17"
+end_date <- "2022-07-23"
+
+## automatically select sunset/sunrise locations
+if(basin == "WB"){
+location_name <- "Sandusky, Ohio"
+lat1 <- 41.464913
+lon1 <- -82.703106
+} else if(basin == "CB"){
+location_name <- "Fairport Harbor, Ohio"
+lat1 <- 41.768908
+lon1 <- -81.281704
+} else if(basin == "EB"){
+location_name <- "Long Point, Ontario"
+lat1 <- 42.565354
+lon1 <- -80.005205
+} else {print("check basin name")}
+```
+
+
+## Project Details
+
+-   Project Name: **add agency specific project name**
+-   Project Code: **add agency specific project code** 
+-   Project Lead: **add PI name**
+-   Start Date: `r start_date`
+-   End Date: `r end_date`
+-   Vessel: **add vessel name**
+-   System: **add hydroacoustic system description**
+
+## Lake Erie Committee Charge
+> Continue hydroacoustic assessment of the pelagic forage fish community in Lake Erie, while incorporating new methods in survey design and analysis following the GLFC’s Great Lakes Hydro Acoustic Standard Operating Procedures where possible/feasible. 
+
+## Survey Background and Goals
+
+**add basin specific survey background and goals - may carry over from previous year**
+
+## Important Notes for `r basin` `r year`
+
+**1.  add bulleted list of important notes associated with `r basin` `r year`"** 
+
+## Random Stratified Survey Desgin
+The updated Lake Erie hydroacoustic survey uses a random stratified sampling design. Sample strata for each basin (West, Central, and East) were developed from a combination of historical environmental, trawl, and hydroacoustic data. In the Central Basin, eight strata were identified separating it into east-west, north-south, and nearshore-offshore regions. Effort allocation ([Effort Allocation]) across strata is based on stratum size and the variability observed in historic hydroacoustic surveys. Within each strata, a fixed number of 5-minute grids are randomly selected and then adjusted to facilitate logistical constraints, if needed ([Survey Map], [Survey Points]). Hyrdoacoustic sampling is orented to the grid coordinates (centroids), where data collection can be conducted in any direction such that the 5-km effort (approx. 2.8 nm or 33 minutes of pinging at 5 kts) starts, ends or simply passes through the coordinates. Trawling efforts ([Trawl Depths], [Survey Points]) should target waters within the grid boundaries.    
+
+## Data Collection and Management
+The survey occurs during the new moon phase in July (`r start_date` to `r end_date`). Hydroacoustic data collection follows guidelines set in the GLSOP including 0.4 msec pulse duration, 4 pings per second, -130 dB collection threshold, and -10 dB reduction in power output. Collection depth is set to 2.5 times the maximum depth encountered across the entire continuous transect. Ping times are restricted to 30 minutes after sunset to 30 minutes before sunrise ([Sunset Times]). 
+
+Each grid transect is saved to a unique folder in the the *3_Ping_Data* directory. During data collection file names will include a prefix that denotes basin, stratum, and grid names (i.e. *WB_S01_G193*). This prefix provides structure required by the standard functions contained in `erieacoustics` facilitating efficient data analysis. Files names will also include a suffix noting the collection vessel (i.e., *almar*, *muskie*, *erie_explorer*). Data stored on the collection device will be backed up daily on an external storage drive.
+
+Temperature profiles are taken frequently throughout the night but not necessarily needed at each transect when there are several in close proximity. Minimally, a temperature profile should be collected within a strata that is surveyed.
+
+A vessel log ([Vessel Log]) is provided to document data collection procedures and events.
+
+Paired midwater trawling is conducted with in each grid with 'Survey' priority ([Survey Points]). Midwater trawling follows established protocols, with number of trawls per grid and target depths outlined in [Survey Points] and [Trawl Depths].
+
+
+```{r sunset-setup}
+hac_dates <- seq(ymd(start_date), ymd(end_date), by = "1 day")
+LP_sun <-getSunlightTimes(hac_dates, lat = lat1, lon = lon1, 
+                 keep=c("sunrise", "sunset"),tz = "EST")
+
+LP_sun <- LP_sun %>% 
+  mutate(sunrise = strftime(sunrise, format = "%H:%M"), 
+         sunset = strftime(sunset, format = "%H:%M"),
+         Location = location_name) %>% 
+  select(date, Location, sunrise, sunset) %>% 
+  rename(Date = date, Sunrise = sunrise, Sunset = sunset)
+```
+
+
+## Sunset Times
+```{r sunset}
+knitr::kable(LP_sun, align = "llcc", caption= paste0("Sunrise and sunset times for ", location_name, ", Lake Erie"), booktabs = T) %>% kable_styling(latex_options = "striped")
+```
+
+
+## Effort Allocation
+```{r strata-allocation}
+effort <- filter(Effort_Allocation,BASIN == basin) %>% 
+  select(STRATUM, area_km2, n_trans_eq) %>% 
+  rename(Stratum = STRATUM, `Area (km2)` = area_km2, `N Transects` = n_trans_eq)
+
+knitr::kable(effort, align = "lcc", caption= paste0("Recommended minimum sampling effort by strata"), booktabs = T) %>% kable_styling(latex_options = "striped")
+```
+
+\newpage
+## Trawl Depths
+```{r, trawl-depths}
+options(knitr.kable.NA = '')
+knitr::kable(Trawl_Depths, caption= "Midwater trawl footrope depths for nearshore and offshore strata. Footrope depth may be adjusted according to forage fish depth distribution observed on sonar.", booktabs = T) %>% kable_styling(latex_options = "striped", stripe_index = c(1:3))
+```
+
+\newpage
+
+## Survey Map  
+![Final 5-minute sample grids for `r basin` `r year` pelagic forage fish survey - attempt 'Extra' grids if feasible for hydroacoustics only.](sample_grids_final.png){height=100% width=100% }
+
+\newpage
+## Survey Points
+```{r survey-points}
+grids <- read_csv("sample_grids_final.csv")
+knitr::kable(grids[,-1], align = "cccccl", caption= paste("Final 5-minute sample grids for", basin,year,"pelagic forage fish survey."), booktabs = T) %>% kable_styling(latex_options = "striped")
+```
+
+
+\newpage
+## Vessel Log
+```{r vessel-log}
+options(knitr.kable.NA = '')
+knitr::kable(Vessel_Log, align = "cccc", caption= "Hydroacoustic vessel log for recording date, times, and events.", booktabs = T) %>% kable_styling(font_size = 11, latex_options = "striped")
+```

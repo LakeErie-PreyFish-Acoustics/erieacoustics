@@ -4,12 +4,14 @@
 \alias{export_transect_evdata}
 \title{Export Echoview transect data}
 \usage{
-export_transect_evdata(prjdir, transectname, horizbin)
+export_transect_evdata(projecthome, transectname, horizbin)
 }
 \arguments{
-\item{projecthome}{Project directory normally obtained using `getwd()`}
+\item{projecthome}{A file path to the project directory. Generally, when working in an
+RStudio project environment you can populate this field using `getwd()`}
 
-\item{transectname}{TTransect name that matches a valid directory in *3_Ping_Data/* directory}
+\item{transectname}{Transect name to be exported. Function expects the transect
+name to correspond with a transect folder located in the *Pings* directory}
 
 \item{horizbin}{Size of the horizontal grid (in meters) to be applied for the analysis cells}
 }
