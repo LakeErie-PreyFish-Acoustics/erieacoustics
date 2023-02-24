@@ -32,7 +32,7 @@ import_epi_bottom_lines <- function(transect) {
   grid <- gsub("a", "", grid) # required for EB 2022
   grid <- gsub("b", "", grid) # required for EB 2022
   grid <- gsub("c", "", grid) # required for EB 2022
-  grid <- as.numeric(gsub("G", "", grid))
+  # grid <- as.numeric(gsub("G", "", grid)) 
   epi$GRID <- grid
   bot$GRID <- grid
 
