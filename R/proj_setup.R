@@ -80,6 +80,16 @@ proj_setup <- function(path, ...) {
     paste0(key, ": ", val, "<br />")
   })
 
+  # Save input parameter for downstream use
+  metadata <- lapply(seq_along(dots), function(i) {
+    key <- names(dots)[[i]]
+    val <- dots[[i]]
+    val
+  })
+
+  names(metadata) <- c("PI", "Analyst", "Agency", "Basin", "Sonar", "Frequency")
+  save(metadata, file = file.path(path, "metadata.RData"))
+
   # collect into single text string
   contents <- paste(
     paste(header, collapse = "\n"),
