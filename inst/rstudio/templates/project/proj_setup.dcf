@@ -1,6 +1,7 @@
 Binding: proj_setup
-Title: New Erie Acoustic Project
+Title: Erie Acoustic Project
 OpenFiles: Instructions.md
+Icon: erie.png
 
 Parameter: Principal Investigator
 Widget: TextInput
