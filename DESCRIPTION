@@ -1,8 +1,20 @@
 Package: erieacoustics
 Type: Package
 Title: Analysis Tools For Erie Acoustic Surveys
-Version: 0.2.2
-Author: J. Holden
+Version: 0.3.0
+Authors@R: 
+  c(person(given = "Jeremy",
+           family = "Holden",
+           role = c("aut", "cre"),
+           email = "jeremy.holden@ontario.ca"),
+    person(given = "Mark",
+           family = "Dufour",
+           role = "aut",
+           email = "mdufour@usgs.gov"),
+    person(given = "Heather",
+           family = "Luken",
+           role = "ctb",
+           email = "heather.luken@dnr.ohio.gov"))
 Maintainer: J. Holden <jeremy.holden@ontario.ca>
 Description: A suite of tools used to standardize acoustic data processing
   and analysis across the multiple Lake Erie acoustic surveys. Tools are designed to work with
@@ -28,3 +40,12 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
+Enhances: 
+    eriespatial,
+    ggplot2,
+    Hmisc,
+    kableExtra,
+    lubridate,
+    readr,
+    sf,
+    suncalc

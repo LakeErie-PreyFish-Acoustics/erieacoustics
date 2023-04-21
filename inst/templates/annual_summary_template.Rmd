@@ -34,7 +34,7 @@ This template populates with values from 'hacdat.csv', 'histo.csv', 'wcpdat.csv'
 
 ```{r setup, include=FALSE}
 ## double check that all required packages are installed
-pck_list <- c('knitr','erieacoustics','eriespatial','dplyr','sf','readr','ggplot2','float')
+pck_list <- c('knitr','erieacoustics','eriespatial','dplyr','sf','readr','ggplot2')
 
 is_installed <- pck_list %in% installed.packages()
 if(!all(is_installed)){
@@ -83,6 +83,20 @@ year <- 2022
     bounds <- bound_box %>% st_bbox() %>% st_as_sfc() %>% st_set_crs(4326)
     basin_shape <- shape_ebstrata
   } else {print("Check basin name")}
+```
+
+## Sample effort
+```{r sample-table}
+data("Effort_Allocation")
+allocation_targets <- Effort_Allocation %>% select(BASIN, STRATUM, n_trans_eq) %>%
+  filter(BASIN == basin) %>% rename(Target = n_trans_eq)
+hacdat_sum <- read_csv(file1) %>% 
+  group_by(BASIN, STRATUM, GRID) %>% 
+  summarize(N = n()) %>% 
+  summarise(Surveyed = n())
+
+kable(left_join(allocation_targets, hacdat_sum))
+
 ```
 
 ## Sample maps

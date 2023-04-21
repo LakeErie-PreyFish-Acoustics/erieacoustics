@@ -1,0 +1,25 @@
+---
+title: "Echogram Processing Steps"
+author: "Jeremy Holden"
+date: "22/02/2023"
+output: html_document
+---
+
+# Processing Instructions
+
+After the setup script has run each transect should be inspected for data quality.
+
+1.  Inspect surface and bottom line. Edit *SurfaceExclusion_Editable* and *BottomExclusion_Editable* as required.
+2.  Inspect areas for bad data regions. Draw as needed. Set type to *Bad Data (no data)* and class to *Bad Data* 
+3.  Inspect the *Epi Layer Max Smoothed MEAN span gaps_Editable* and edit as required. 
+4.  Adjust *EchogramFloor* line to below bottom and below the *Epi Layer Max Smoothed MEAN span gaps_Editable* line.
+5.  When satisfied with the quality of the echogram, save and close. Line relative analysis regions are created in the export script using *Surface_Exclude*, *Epi Layer Max Smoothed MEAN span gaps_Editable* and *EchogramFloor* lines to define *EPI* and *HYP* regions within their own region class.
+
+## Repicking the Epi Line
+If the line pick was initially poor you can adjust the maximum depth and attempt to repick the epi/hypo layer. To do so:
+1. Ungroup the *Epi Layer Identification* group.
+2. Go to the properties for *Epi_Layer* and adjust the maximum depth in the *Sv Line Pick*
+3. If the line is now better fit to the epi/hypo division re-create the *Epi Layer_Editable* by creating a new editable line. Overwrite the *Epi Layer_Editable* by making a copy of the *Epi_Layer* line.
+4. Edit line as required.
+5. Re-create the *Epi Layer Max Smoothed MEAN span gaps_Editable* by making a copy of *Epi Layer Max Smoothed MEAN span gaps* and edit as required.
+
