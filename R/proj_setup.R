@@ -87,7 +87,8 @@ proj_setup <- function(path, ...) {
     val
   })
 
-  names(metadata) <- c("PI", "Analyst", "Agency", "Basin", "Sonar", "Frequency")
+  names(metadata) <- c("PI", "Agency", "Basin", "Sonar",
+                       "Frequency", "Year", "Vessel")
   save(metadata, file = file.path(path, "metadata.RData"))
 
   # collect into single text string
@@ -161,7 +162,5 @@ proj_setup <- function(path, ...) {
     "run_all <- function(x) {set_up_transect(evtemplate, getwd(), TRANSDUCER, x)}",
     "lapply(transects, run_all)"
   )
-
-  # writeLines(transect_setup, con = file.path(path, "7_Annual_Summary/1_run_setup_template.R"))
 
 }
