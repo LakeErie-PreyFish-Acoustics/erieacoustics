@@ -160,7 +160,7 @@ knitr::kable(Trawl_Depths, caption= "Midwater trawl footrope depths for nearshor
 \newpage
 ## Survey Points
 ```{r survey-points}
-grids <- read_csv("sample_grids_final.csv")
+grids <- read_csv(file.path(here(), "1_Annual_Protocol/sample_grids_final.csv"))
 knitr::kable(grids[,-1], align = "cccccl", caption= paste("Final 5-minute sample grids for", basin,year,"pelagic forage fish survey."), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
