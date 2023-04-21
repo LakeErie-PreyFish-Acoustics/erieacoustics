@@ -65,6 +65,7 @@ finish_setup <- function() {
 
   rmarkdown::render("6_Misc/Calibration_Instructions_Notes.Rmd")
   rmarkdown::render("ReadMe.md")
+  rstudioapi::documentOpen("ReadMe.md")
 
   usethis::ui_done("ReadMe file rendered to html")
   usethis::ui_done("`1_import_data_to_template.R` file created in `7_Annual_Summary`")
