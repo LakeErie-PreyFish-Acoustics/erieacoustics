@@ -6,7 +6,7 @@ Icon: erie.png
 Parameter: ProjectLead
 Widget: TextInput
 Label: Project Lead
-Default: M. Dufour
+Default: M. DuFour
 Position: Left
 
 Parameter: Agency

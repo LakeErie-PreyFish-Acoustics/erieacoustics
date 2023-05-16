@@ -72,6 +72,7 @@ finish_setup <- function() {
   rmarkdown::render("6_Misc/Calibration_Instructions_Notes.Rmd")
   rmarkdown::render("ReadMe.md")
   rstudioapi::documentOpen("ReadMe.md")
+  rmarkdown::render("Instructions.md")
   rmarkdown::render("6_Misc/Echogram_Processing_Instructions.Rmd")
 
   usethis::ui_done("ReadMe file rendered to html")
