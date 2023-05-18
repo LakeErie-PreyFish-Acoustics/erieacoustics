@@ -20,18 +20,17 @@
 ## load packages
 library(erieacoustics)
 library(eriespatial)
-library(magrittr)
 library(dplyr)
 library(sf)
-library(base)
-library(utils)
 library(readr)
 library(ggplot2)
 library(gridExtra)
+library(here)
 
 ## Set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
-basin <- "WB"
-year <- 2022
+load(file.path(here(), "metadata.RData"))
+basin <- metadata$Basin
+year <- metadata$Year
 
 ## generate proposed sample grids
 sample_grids_proposed(basin,year)

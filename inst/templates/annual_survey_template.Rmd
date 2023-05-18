@@ -1,16 +1,19 @@
 ---
-title: "Lake Erie Pelagic Forage Fish Survey: **add basin and year**"
-author: "**add PI name**"
-date: '**add Date**'
+title: Lake Erie Pelagic Forage Fish Survey
 output:
-  pdf_document: default
   html_document:
     toc: yes
     toc_float: yes
+  pdf_document: 
 header-includes: 
  \usepackage{float}
  \floatplacement{figure}{H}
  \floatplacement{table}{H}
+params:
+  startdate: "2023-07-17"
+  enddate: "2023-07-27"
+  prjnm: "Lake Erie East Basin Acoustic Survey"
+  prjcd: "LEA_IA23_EBA"
 ---
 
 <!-- 
@@ -26,7 +29,7 @@ This Rmarkdown template generates an annual project proposal document to guide d
 How to use ----
 This template populates with values from 'sample_grids_final.png' and 'sample_grids_final.csv', and as well values defined in the 'load-packages' code block.
 1. Finalize 'sample_grids_final.png' and 'sample_grids_final.csv'
-2. Set 'basin', 'year', and survey 'start_date' and 'end_date' in section 'load-packages' code block
+2. Edit report parameters in YAML section
 3. Updated remainder of text as needed.
 4. Knit to HTML, PDF, or WORD.
 5. Review 'Project_Proposal_Summary.html/pdf/docx' for accuracy.
@@ -38,21 +41,17 @@ library(suncalc)
 library(lubridate)
 library(knitr)
 library(kableExtra)
-library(Hmisc)
 library(erieacoustics)
 library(eriespatial)
 library(readr)
-
+library(float)
+library(here)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+load(file.path(here(), "metadata.Rdata"))
 
-## set basin (e.g., WB, CB, or EB) and survey year (e.g., 2022)
-basin = "EB" 
-year = 2022
-
-## set survey start and end dates
-start_date <- "2022-07-17"
-end_date <- "2022-07-23"
+basin = metadata$Basin
+year = metadata$Year
 
 ## automatically select sunset/sunrise locations
 if(basin == "WB"){
@@ -68,18 +67,25 @@ location_name <- "Long Point, Ontario"
 lat1 <- 42.565354
 lon1 <- -80.005205
 } else {print("check basin name")}
+
+# get Basin full name
+if(metadata$Basin == "wB") {basin_full <- "West Basin"}
+if(metadata$Basin == "CB") {basin_full <- "Central Basin"}
+if(metadata$Basin == "EB") {basin_full <- "East Basin"}
 ```
 
+# `r basin_full`, `r metadata$Year`
+`r format(Sys.Date(), "%B %d %Y")`
 
 ## Project Details
 
--   Project Name: **add agency specific project name**
--   Project Code: **add agency specific project code** 
--   Project Lead: **add PI name**
+-   Project Name: `r params$prjnm`
+-   Project Code: `r params$prjcd`
+-   Project Lead: `r metadata$PI`
 -   Start Date: `r start_date`
 -   End Date: `r end_date`
--   Vessel: **add vessel name**
--   System: **add hydroacoustic system description**
+-   Vessel: `r metadata$Vessel`
+-   System: `r paste(metadata$Sonar, metadata$Frequency, sep = " ")`
 
 ## Lake Erie Committee Charge
 > Continue hydroacoustic assessment of the pelagic forage fish community in Lake Erie, while incorporating new methods in survey design and analysis following the GLFC’s Great Lakes Hydro Acoustic Standard Operating Procedures where possible/feasible. 
@@ -90,7 +96,7 @@ lon1 <- -80.005205
 
 ## Important Notes for `r basin` `r year`
 
-**1.  add bulleted list of important notes associated with `r basin` `r year`"** 
+**1.  add bulleted list of important notes associated with `r basin` `r year`** 
 
 ## Random Stratified Survey Desgin
 The updated Lake Erie hydroacoustic survey uses a random stratified sampling design. Sample strata for each basin (West, Central, and East) were developed from a combination of historical environmental, trawl, and hydroacoustic data. In the Central Basin, eight strata were identified separating it into east-west, north-south, and nearshore-offshore regions. Effort allocation ([Effort Allocation]) across strata is based on stratum size and the variability observed in historic hydroacoustic surveys. Within each strata, a fixed number of 5-minute grids are randomly selected and then adjusted to facilitate logistical constraints, if needed ([Survey Map], [Survey Points]). Hyrdoacoustic sampling is orented to the grid coordinates (centroids), where data collection can be conducted in any direction such that the 5-km effort (approx. 2.8 nm or 33 minutes of pinging at 5 kts) starts, ends or simply passes through the coordinates. Trawling efforts ([Trawl Depths], [Survey Points]) should target waters within the grid boundaries.    
@@ -151,7 +157,7 @@ knitr::kable(Trawl_Depths, caption= "Midwater trawl footrope depths for nearshor
 \newpage
 ## Survey Points
 ```{r survey-points}
-grids <- read_csv("sample_grids_final.csv")
+grids <- read_csv(file.path(here(), "1_Annual_Protocol/sample_grids_final.csv"))
 knitr::kable(grids[,-1], align = "cccccl", caption= paste("Final 5-minute sample grids for", basin,year,"pelagic forage fish survey."), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
