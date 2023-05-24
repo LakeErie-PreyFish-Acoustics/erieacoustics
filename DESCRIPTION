@@ -1,7 +1,7 @@
 Package: erieacoustics
 Type: Package
 Title: Analysis Tools For Erie Acoustic Surveys
-Version: 0.3.0
+Version: 0.3.0.9000
 Authors@R: 
   c(person(given = "Jeremy",
            family = "Holden",

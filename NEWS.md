@@ -1,3 +1,5 @@
+# erieacoustics (development version)
+
 # erieacoustics 0.3.0
 `erieacoustics` v 0.3.0 has officially been released. 
 
