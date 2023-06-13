@@ -50,34 +50,41 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 load(file.path(here(), "metadata.Rdata"))
 
-basin = metadata$Basin
-year = metadata$Year
+basin <- metadata$Basin
+year <- metadata$Year
 start_date <- params$startdate
 end_date <- params$enddate
 metadata$start_date <- start_date
-metadata$end_date <- end_data
+metadata$end_date <- end_date
 save(metadata, file = file.path(here(), "metadata.Rdata"))
 
-
 ## automatically select sunset/sunrise locations
-if(basin == "WB"){
-location_name <- "Sandusky, Ohio"
-lat1 <- 41.464913
-lon1 <- -82.703106
-} else if(basin == "CB"){
-location_name <- "Fairport Harbor, Ohio"
-lat1 <- 41.768908
-lon1 <- -81.281704
-} else if(basin == "EB"){
-location_name <- "Long Point, Ontario"
-lat1 <- 42.565354
-lon1 <- -80.005205
-} else {print("check basin name")}
+if (basin == "WB") {
+  location_name <- "Sandusky, Ohio"
+  lat1 <- 41.464913
+  lon1 <- -82.703106
+} else if (basin == "CB") {
+  location_name <- "Fairport Harbor, Ohio"
+  lat1 <- 41.768908
+  lon1 <- -81.281704
+} else if (basin == "EB") {
+  location_name <- "Long Point, Ontario"
+  lat1 <- 42.565354
+  lon1 <- -80.005205
+} else {
+  print("check basin name")
+}
 
 # get Basin full name
-if(metadata$Basin == "wB") {basin_full <- "West Basin"}
-if(metadata$Basin == "CB") {basin_full <- "Central Basin"}
-if(metadata$Basin == "EB") {basin_full <- "East Basin"}
+if (metadata$Basin == "wB") {
+  basin_full <- "West Basin"
+}
+if (metadata$Basin == "CB") {
+  basin_full <- "Central Basin"
+}
+if (metadata$Basin == "EB") {
+  basin_full <- "East Basin"
+}
 ```
 
 # `r basin_full`, `r metadata$Year`
@@ -121,38 +128,42 @@ Paired midwater trawling is conducted with in each grid with 'Survey' priority (
 
 ```{r sunset-setup}
 hac_dates <- seq(ymd(start_date), ymd(end_date), by = "1 day")
-LP_sun <-getSunlightTimes(hac_dates, lat = lat1, lon = lon1, 
-                 keep=c("sunrise", "sunset"),tz = "EST")
+LP_sun <- getSunlightTimes(hac_dates,
+  lat = lat1, lon = lon1,
+  keep = c("sunrise", "sunset"), tz = "EST"
+)
 
-LP_sun <- LP_sun %>% 
-  mutate(sunrise = strftime(sunrise, format = "%H:%M"), 
-         sunset = strftime(sunset, format = "%H:%M"),
-         Location = location_name) %>% 
-  select(date, Location, sunrise, sunset) %>% 
+LP_sun <- LP_sun %>%
+  mutate(
+    sunrise = strftime(sunrise, format = "%H:%M"),
+    sunset = strftime(sunset, format = "%H:%M"),
+    Location = location_name
+  ) %>%
+  select(date, Location, sunrise, sunset) %>%
   rename(Date = date, Sunrise = sunrise, Sunset = sunset)
 ```
 
 
 ## Sunset Times
 ```{r sunset}
-knitr::kable(LP_sun, align = "llcc", caption= paste0("Sunrise and sunset times for ", location_name, ", Lake Erie"), booktabs = T) %>% kable_styling(latex_options = "striped")
+knitr::kable(LP_sun, align = "llcc", caption = paste0("Sunrise and sunset times for ", location_name, ", Lake Erie"), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
 
 ## Effort Allocation
 ```{r strata-allocation}
-effort <- filter(Effort_Allocation,BASIN == basin) %>% 
-  select(STRATUM, area_km2, n_trans_eq) %>% 
+effort <- filter(Effort_Allocation, BASIN == basin) %>%
+  select(STRATUM, area_km2, n_trans_eq) %>%
   rename(Stratum = STRATUM, `Area (km2)` = area_km2, `N Transects` = n_trans_eq)
 
-knitr::kable(effort, align = "lcc", caption= paste0("Recommended minimum sampling effort by strata"), booktabs = T) %>% kable_styling(latex_options = "striped")
+knitr::kable(effort, align = "lcc", caption = paste0("Recommended minimum sampling effort by strata"), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
 \newpage
 ## Trawl Depths
 ```{r, trawl-depths}
-options(knitr.kable.NA = '')
-knitr::kable(Trawl_Depths, caption= "Midwater trawl footrope depths for nearshore and offshore strata. Footrope depth may be adjusted according to forage fish depth distribution observed on sonar.", booktabs = T) %>% kable_styling(latex_options = "striped", stripe_index = c(1:3))
+options(knitr.kable.NA = "")
+knitr::kable(Trawl_Depths, caption = "Midwater trawl footrope depths for nearshore and offshore strata. Footrope depth may be adjusted according to forage fish depth distribution observed on sonar.", booktabs = T) %>% kable_styling(latex_options = "striped", stripe_index = c(1:3))
 ```
 
 \newpage
@@ -164,13 +175,13 @@ knitr::kable(Trawl_Depths, caption= "Midwater trawl footrope depths for nearshor
 ## Survey Points
 ```{r survey-points}
 grids <- read_csv(file.path(here(), "1_Annual_Protocol/sample_grids_final.csv"))
-knitr::kable(grids[,-1], align = "cccccl", caption= paste("Final 5-minute sample grids for", basin,year,"pelagic forage fish survey."), booktabs = T) %>% kable_styling(latex_options = "striped")
+knitr::kable(grids[, -1], align = "cccccl", caption = paste("Final 5-minute sample grids for", basin, year, "pelagic forage fish survey."), booktabs = T) %>% kable_styling(latex_options = "striped")
 ```
 
 
 \newpage
 ## Vessel Log
 ```{r vessel-log}
-options(knitr.kable.NA = '')
-knitr::kable(Vessel_Log, align = "cccc", caption= "Hydroacoustic vessel log for recording date, times, and events.", booktabs = T) %>% kable_styling(font_size = 11, latex_options = "striped")
+options(knitr.kable.NA = "")
+knitr::kable(Vessel_Log, align = "cccc", caption = "Hydroacoustic vessel log for recording date, times, and events.", booktabs = T) %>% kable_styling(font_size = 11, latex_options = "striped")
 ```
