@@ -45,16 +45,23 @@ sample_grids_proposed <- function(basin, year) {
   ## create X Y coordinate columns from geometry
   shape_5mincent_surv_sub$X <- sf::st_coordinates(shape_5mincent_surv_sub)[, 1]
   shape_5mincent_surv_sub$Y <- sf::st_coordinates(shape_5mincent_surv_sub)[, 2]
+  shape_5mincent_surv_sub_tbl <- dplyr::as_tibble(shape_5mincent_surv_sub) %>%
+    dplyr::select(-geometry) %>%
+    dplyr::rename(Longitude = X,
+                  Latitude=Y,
+                  Basin = BASIN,
+                  Stratum = STRATUM,
+                  Grid = GRID)
 
   ## write all available sampled grids to file as .csv
   ## flag if previous file was overwritten
   file <- "1_Annual_Protocol/sample_grids_all.csv"
 
   if (file.exists(file)) {
-    utils::write.csv(shape_5mincent_surv_sub, file, row.names = F)
+    utils::write.csv(shape_5mincent_surv_sub_tbl, file, row.names = F)
     print("previous sample_grids_all.csv was overwritten")
   } else {
-    utils::write.csv(shape_5mincent_surv_sub, file, row.names = F)
+    utils::write.csv(shape_5mincent_surv_sub_tbl, file, row.names = F)
     print("sample_grids_all.csv was written to file")
   }
 

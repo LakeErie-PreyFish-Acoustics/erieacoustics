@@ -35,5 +35,28 @@ year <- metadata$Year
 ## generate proposed sample grids
 sample_grids_proposed(basin,year)
 
+## generate extra sample grids if necessary
+library(purrr)
+allgrids <- read.csv("1_Annual_Protocol/sample_grids_all.csv")
+random_grids <- read.csv("1_Annual_Protocol/sample_grids_proposed.csv")
+notselected <- anti_join(allgrids, random_grids, by=c("Basin", "Stratum", "Grid"))
+
+select_extra <- function(df, n_extra) {
+  n_row <- nrow(df)
+  n_select <- ifelse(n_extra > n_row, n_row, n_extra)
+  df_return <- df[sample(1:n_row, n_select), ]
+  df_return
+}
+
+notselected %>%
+  split(.$Stratum) %>%
+  map(select_extra, n_extra = 5) %>%
+  bind_rows() %>%
+  mutate(Priority = "Extra") %>%
+  select(Basin, Stratum, Grid, Priority, Latitude, Longitude) %>%
+  write.csv(., file = "1_Annual_Protocol/test_extra.csv", row.names = F)
+
+## Edit sample_grids_final.csv as required
+
 ## finalize sample grids
 sample_grids_final(basin,year)
