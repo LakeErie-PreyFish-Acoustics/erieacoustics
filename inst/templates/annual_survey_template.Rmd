@@ -123,7 +123,7 @@ Temperature profiles are taken frequently throughout the night but not necessari
 
 A vessel log ([Vessel Log]) is provided to document data collection procedures and events.
 
-Paired midwater trawling is conducted with in each grid with 'Survey' priority ([Survey Points]). Midwater trawling follows established protocols, with number of trawls per grid and target depths outlined in [Survey Points] and [Trawl Depths].
+Paired midwater trawling is conducted within each grid with 'Survey' priority ([Survey Points]). Midwater trawling follows established protocols, with number of trawls per grid and target depths outlined in [Survey Points] and [Trawl Depths].
 
 
 ```{r sunset-setup}
