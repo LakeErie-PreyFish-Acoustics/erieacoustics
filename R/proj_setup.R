@@ -20,14 +20,14 @@ proj_setup <- function(path, ...) {
     "## Folder Description and Contents",
     "File | Description",
     "---------- | --------------------------------------------------",
-    "**1_Annual_Protocol** | data processing and Rmarkdown scripts and products for annual survey protocol",
-    "**2_EVTemplate** | Echoview processing template should be stored here to be available to `set_up_transect.R`",
-    "**3_Ping_Data** | uniquely named transect folders (basin_stratum_grid)",
-    "**3_Ping_Data/xB_Sxx_Gxxx** | transect specific hydroacoustic data stored within a single directory",
-    "**4_Trawl_Data** | contains the paired trawl data",
-    "**5_Enviro_Data** | contains water column profiles and other environmental measurements",
-    "**6_Misc** | contains miscellaneous files associated with survey",
-    "**7_Annual_Summary** | contains data processing and Rmarkdown scripts and products for annual summary"
+    "**1_Annual_Protocol** | Annual survey protocol scripts and products",
+    "**2_EVTemplate** | Echoview processing template must be stored here for access by `set_up_transect.R`",
+    "**3_Ping_Data** | Uniquely named transect folders (basin_stratum_grid)",
+    "**3_Ping_Data/xB_Sxx_Gxxx** | Transect specific hydroacoustic data stored within a single directory",
+    "**4_Trawl_Data** | Paired midwater trawl data",
+    "**5_Enviro_Data** | Water column profiles and other environmental measurements",
+    "**6_Misc** | Miscellaneous files associated with survey",
+    "**7_Annual_Summary** | Annual survey summary scripts and products"
   )
 
   instructions <- c(
@@ -44,29 +44,30 @@ proj_setup <- function(path, ...) {
     "## Instructions  ",
     "1. Run `erieacoustics::finish_setup()` to complete the project set up.  ",
     "2. In folder **1_Annual_Protocol**, use `1_select_sample_grids.R` and `2_Project_Proposal_Summary.Rmd` to generate *2_Project_Proposal_Summary.html*.  ",
-    "3. Field calibrate hydroacoustic system. ([instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
+    "3. Field calibrate hydroacoustic system. ([calibration instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
     "4. Collect survey data following *2_Project_Proposal_Summary.html*.   ",
     "5. Transfer hydroacoustic, trawl, and environmental data to folders.  ",
     "    * **3_Ping_Data** - houses raw transects data in transect specific folders (e.g., CB_S07_G621).  ",
     "    * **4_Trawl_Data** - format trawl data and transfer to *Trawl_Catch.csv*, *Trawl_Effort.csv*, and *Trawl_length.csv* files.  ",
     "    * **5_Enviro_Data** - format profile data and transfer to *Water_Column_Profiles.csv*.  ",
     "    * **6_Misc** - all the stuff we forgot about... put it here.  ",
-    "6. Follow [Data Processing Step] below.  ",
+    "6. Follow [Data Processing Steps] below.  ",
     "Reveiw and update the `ReadMe.md` file as needed. View: [ReadMe](ReadMe.html).  ",
     " ",
-    "## Processing Steps  ",
-    "1. Analyze the calibration data and generate calibration report ([instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
+    "## Data Processing Steps  ",
+    "1. Analyze the calibration data and generate calibration report ([calibration instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
     "2. Create *.ecs file and update transducer characteristic based on calibration report.   ",
     "3. In **2_EVTemplate**, Open the EV template and edit the template to include the new calibration file and update variables in *Formula_Nv* and *Platform* objects. Save as *ErieHacTemplate_20xx_xB.Ev*.    ",
-    "4. In **7_Annual_Summary**, open and edit `1_import_data_to_template.R`. This script applies the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file. Run `1_import_data_to_template.R`. *WARNING*: this process could take a long time!    ",
+    "4. In **7_Annual_Summary**, open and edit `1_import_data_to_template.R`. This script uses the custom set up functions from `erieacoustics` to apply COM commands directly to Echoview to import and save a new EV file. Run `1_import_data_to_template.R`. *WARNING*: this process could take a long time!    ",
     "5. In **Ping_Data** sub-folders, scrutinize, clean, and edit each transects EV file. See link to detailed instructions: [Echogram Processing Instructions](6_Misc/Echogram_Processing_Instructions.html).   ",
     "6. In **7_Annual_Summary**, when data inspection and editing is complete, run `2_export_data_from_EV_EV.R` to export each transect. *WARNING*: this could take a long time!   ",
     "7. In **7_Annual_Summary**, open `3_aggregate_format_hydro_data.R` and run script to produce *hacdat.csv*, *histo.csv*, and *histohac.csv*.   ",
     "8. In **7_Annual_Summary**, open `4_aggregate_format_wcp_data.R` and run script to produce *EpiBotLineSummaries.csv* and *wcpdat.csv*.  ",
     "9. In **7_Annual_Summary**, open `5_aggregate_format_trawl_data.R` and run script to produce *trwldat.csv* and *trwllen.csv*.  ",
     "10. In **7_Annual_Summary**, open `6_Annual_Summary.R` and run script to produce *6_Annual_Summary.html*. Scrutinize report and make an necessary changes in the data processing flow. Reproduce *6_Annual_Summary.html* as needed.  ",
-    "11. Move forward with survey presentation and reporting.  ",
-    ""
+    "11. Move forward with survey presentation and reporting.",
+    "12. Collate data across basins and prepare for data release through sciencebase.org",
+    " "
   )
 
 
@@ -80,6 +81,17 @@ proj_setup <- function(path, ...) {
     paste0(key, ": ", val, "<br />")
   })
 
+  # Save input parameter for downstream use
+  metadata <- lapply(seq_along(dots), function(i) {
+    key <- names(dots)[[i]]
+    val <- dots[[i]]
+    val
+  })
+
+  names(metadata) <- c("PI", "Agency", "Basin", "Sonar",
+                       "Frequency", "Year", "Vessel")
+  save(metadata, file = file.path(path, "metadata.RData"))
+
   # collect into single text string
   contents <- paste(
     paste(header, collapse = "\n"),
@@ -90,7 +102,7 @@ proj_setup <- function(path, ...) {
   abstract <-  c(
     "# Post Survey Notes",
     " ",
-    "Describe notable deviations from *2_Annual_Survey_Protocol.html*"
+    "Record progress and describe notable deviations from *2_Annual_Survey_Protocol.html*"
   )
 
   filetable2 <- c(
@@ -99,10 +111,10 @@ proj_setup <- function(path, ...) {
     "---------- | --------------------------------------------------",
     "**1_Annual_Protocol** | Annual protocol completion data",
     "**2_EVTemplate** | Notable updates to Echoview template",
-    "**3_Ping_Data** | Data of file transfer - total number of transects",
+    "**3_Ping_Data** | File transfer date and total number of transects",
     "**3_Ping_Data/xB_Sxx_Gxxx** | Transect specific notes",
-    "**4_Trawl_Data** | Data acquisition date - agency point of contacts",
-    "**5_Enviro_Data** | File transfer date - agency point of contact",
+    "**4_Trawl_Data** | Data acquisition date and agency point of contact",
+    "**5_Enviro_Data** | File transfer date and agency point of contact",
     "**6_Misc** | Associated file descriptions",
     "**7_Annual_Summary** | Completion date"
   )
@@ -151,7 +163,5 @@ proj_setup <- function(path, ...) {
     "run_all <- function(x) {set_up_transect(evtemplate, getwd(), TRANSDUCER, x)}",
     "lapply(transects, run_all)"
   )
-
-  # writeLines(transect_setup, con = file.path(path, "7_Annual_Summary/1_run_setup_template.R"))
 
 }

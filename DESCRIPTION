@@ -1,7 +1,7 @@
 Package: erieacoustics
 Type: Package
 Title: Analysis Tools For Erie Acoustic Surveys
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
   c(person(given = "Jeremy",
            family = "Holden",
@@ -27,12 +27,16 @@ RoxygenNote: 7.2.3
 Imports: 
     dplyr,
     EchoviewR (>= 1.1.18),
+    here,
     RDCOMClient (>= 0.95.0),
+    rstudioapi,
+    suncalc,
     usethis
 Suggests: 
     rmarkdown,
     knitr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    purrr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 

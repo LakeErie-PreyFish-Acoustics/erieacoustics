@@ -1,35 +1,46 @@
 Binding: proj_setup
-Title: New Erie Acoustic Project
+Title: Erie Acoustic Project
 OpenFiles: Instructions.md
+Icon: erie.png
 
-Parameter: Principal Investigator
+Parameter: ProjectLead
 Widget: TextInput
-Label: Principal Investigator
-Default: M. Dufour
-Position: Right
-
-Parameter: Analyst
-Widget: TextInput
-Label: Analyst
-Default: J. Holden
-Position: Right
+Label: Project Lead
+Default: M. DuFour
+Position: Left
 
 Parameter: Agency
 Widget: SelectInput
 Label: Agency
 Fields: USGS, ODNR, OMNRF
+Position: Left
 
 Parameter: Basin
 Widget: SelectInput
 Label: Basin
 Fields: EB, CB, WB
+Position: Left
 
-Parameter: Sonar Type
+Parameter: Sonar
 Widget: SelectInput
 Label: Sonar
 Fields: Simrad, Biosonics
+Position: Right
 
 Parameter: Frequency
 Widget: SelectInput
 Label: Frequency
 Fields: 120kHz, 200kHz
+Position: Right
+
+Parameter: Year
+Widget: SelectInput
+Label: Year
+Fields: 2023, 2024, 2025
+Position: Right
+
+Parameter: Vessel
+Widget: TextInput
+Label: Survey Vessel
+Position: Left
+
