@@ -1,4 +1,9 @@
-# erieacoustics (development version)
+# erieacoustics 0.3.1
+Minor update that enhances project set up.  
+Changes are described in:  
+- Pull Request #59  
+- Issue #60  
+- Issue #61
 
 # erieacoustics 0.3.0
 `erieacoustics` v 0.3.0 has officially been released. 
