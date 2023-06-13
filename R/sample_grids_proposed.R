@@ -51,10 +51,10 @@ sample_grids_proposed <- function(basin, year) {
   file <- "1_Annual_Protocol/sample_grids_all.csv"
 
   if (file.exists(file)) {
-    utils::write.csv(shape_5mincent_surv_sub, file)
+    utils::write.csv(shape_5mincent_surv_sub, file, row.names = F)
     print("previous sample_grids_all.csv was overwritten")
   } else {
-    utils::write.csv(shape_5mincent_surv_sub, file)
+    utils::write.csv(shape_5mincent_surv_sub, file, row.names = F)
     print("sample_grids_all.csv was written to file")
   }
 
