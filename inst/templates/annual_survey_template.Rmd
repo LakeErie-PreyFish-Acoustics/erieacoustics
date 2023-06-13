@@ -52,6 +52,12 @@ load(file.path(here(), "metadata.Rdata"))
 
 basin = metadata$Basin
 year = metadata$Year
+start_date <- params$startdate
+end_date <- params$enddate
+metadata$start_date <- start_date
+metadata$end_date <- end_data
+save(metadata, file = file.path(here(), "metadata.Rdata"))
+
 
 ## automatically select sunset/sunrise locations
 if(basin == "WB"){
