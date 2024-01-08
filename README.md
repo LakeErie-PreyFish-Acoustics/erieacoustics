@@ -1,5 +1,5 @@
 
-# erieacoustics
+# erieacoustics <img src="man/figures/logo.png" align="right" height="139" />
 
 <!-- badges: start -->
 [![Generic badge](https://img.shields.io/badge/Dev-InProgress-<COLOR>.svg)](https://shields.io/)
