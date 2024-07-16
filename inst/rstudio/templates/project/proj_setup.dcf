@@ -12,7 +12,7 @@ Position: Left
 Parameter: Agency
 Widget: SelectInput
 Label: Agency
-Fields: USGS, ODNR, OMNRF
+Fields: USGS, ODNR, OMNR
 Position: Left
 
 Parameter: Basin
