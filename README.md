@@ -32,7 +32,7 @@ devtools::install_github('AustralianAntarcticDivision/EchoviewR')
 You can install the development version of erieacoustics from github.
 
 ``` r
-devtools::install_github("https://github.com/HoldenJe/erieacoustics") 
+devtools::install_github("https://github.com/LakeErie-PreyFish-Acoustics/erieacoustics") 
 ```
 
 ## Example
