@@ -52,7 +52,7 @@ proj_setup <- function(path, ...) {
     "    * **5_Enviro_Data** - format profile data and transfer to *Water_Column_Profiles.csv*.  ",
     "    * **6_Misc** - all the stuff we forgot about... put it here.  ",
     "6. Follow [Data Processing Steps] below.  ",
-    "Reveiw and update the `ReadMe.md` file as needed. View: [ReadMe](ReadMe.html).  ",
+    "Review and update the `ReadMe.md` file as needed. View: [ReadMe](ReadMe.html).  ",
     " ",
     "## Data Processing Steps  ",
     "1. Analyze the calibration data and generate calibration report ([calibration instructions](6_Misc/Calibration_Instructions_Notes.html)).   ",
